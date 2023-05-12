@@ -4,8 +4,8 @@ REPOSITORY=/home/ubuntu/Clone_What_Is
 cd $REPOSITORY
 
 APP_NAME=Clone_What_Is
-#JAR_NAME=$(find $REPOSITORY/build/libs/ -name "*.jar" | sort | tail -n 1)
-JAR_NAME=$(ls $REPOSITORY/build/libs/ | grep 'SNAPSHOT.jar' | tail -n 1)
+JAR_NAME=$(find $REPOSITORY/build/libs/ -name "*.jar" | sort | tail -n 1)
+#JAR_NAME=$(ls $REPOSITORY/build/libs/ | grep 'SNAPSHOT.jar' | tail -n 1)
 JAR_PATH=$REPOSITORY/build/libs/$JAR_NAME
 CURRENT_PID=$(pgrep -f $APP_NAME)
 
@@ -18,4 +18,4 @@ sleep 5
 fi
 
 echo "> $JAR_PATH 배포"
-nohup java -jar $JAR_PATH > /dev/null 2> /dev/null < /dev/null &
+nohup java -jar $JAR_PATH > output.log 2>&1 &
