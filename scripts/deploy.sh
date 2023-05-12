@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 
-REPOSITORY=/home/ubuntu/Clone_What_Is
-cd $REPOSITORY
+#REPOSITORY=/home/ubuntu/Clone_What_Is
+#cd $REPOSITORY
 
 APP_NAME=Clone_What_Is
-JAR_NAME=$(find $REPOSITORY/build/libs/ -name "*.jar" | sort | tail -n 1)
-#JAR_NAME=$(ls $REPOSITORY/build/libs/ | grep 'SNAPSHOT.jar' | tail -n 1)
-JAR_PATH=$REPOSITORY/build/libs/$JAR_NAME
+JAR_NAME=$(find . -name "*.jar" | sort | tail -n 1)
+JAR_PATH=./$JAR_NAME
 CURRENT_PID=$(pgrep -f $APP_NAME)
 
 if [ -z "$CURRENT_PID" ]; then
