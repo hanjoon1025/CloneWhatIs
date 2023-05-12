@@ -18,10 +18,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         
-      - name: Setup Java JDK 17
+      - name: Setup Java JDK
         uses: actions/setup-java@v2
         with:
           java-version: 17
+          distribution: 'adopt'  # 추가된 부분
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
