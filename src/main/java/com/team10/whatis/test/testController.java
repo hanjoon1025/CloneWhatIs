@@ -11,4 +11,5 @@ public class testController {
     public String helloWorld(){
         return "CICD 동작확인";
     }
+
 }
