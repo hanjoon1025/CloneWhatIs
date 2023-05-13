@@ -79,14 +79,14 @@ public class EmailService {
         try {
             message = createMessage(email.getEmail(),code); // 전송 메시지 삭성 메서드 호출
         } catch (MessagingException e) {
-            throw new IllegalStateException("메일 전송 실패");
+            ResponseDto.setBadRequest("메일 전송 실패",null);
         } catch (UnsupportedEncodingException e) {
-            throw new IllegalStateException("메일 전송 실패");
+            ResponseDto.setBadRequest("메일 전송 실패",null);
         }
         try{
             javaMailSender.send(message); // 메일 발송
         }catch(MailException es){
-            throw new IllegalStateException("메일 전송 실패");
+            ResponseDto.setBadRequest("메일 전송 실패",null);
         }
         Email.updateCode(email,code);
         emailRepository.save(email);
@@ -95,9 +95,9 @@ public class EmailService {
     }
 
     public ResponseDto<?> codeCheck(CodeRequestDto codeRequestDto){
-        Email findEmail = emailRepository.findById(codeRequestDto.getEmail()).orElseThrow(() -> new IllegalStateException("인증 실패"));
+        Email findEmail = emailRepository.findById(codeRequestDto.getEmail()).orElseThrow(() -> new IllegalArgumentException("인증을 요청한 이메일이 아닙니다."));
         if(!findEmail.getCode().equals(codeRequestDto.getCode())){
-            throw new IllegalStateException("인증코드가 일치하지 않습니다.");
+            throw new IllegalArgumentException("인증코드가 일치하지 않습니다.");
         }
         emailRepository.deleteById(codeRequestDto.getEmail());
         return ResponseDto.setSuccess(null);
