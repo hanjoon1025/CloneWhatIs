@@ -41,7 +41,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     //Security context에 인증 정보 저장
                     String newToken = newAccessToken.substring(7);
                     setAuthentication(jwtUtil.getUserInfoFromToken(newToken));
-                    System.out.println("새로운 토큰 생성 완료");
+                    log.info("새로운 토큰 생성 완료");
                 }
                 //Access & Refresh 토큰 만료시
                 else {
