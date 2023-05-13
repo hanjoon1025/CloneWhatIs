@@ -50,7 +50,7 @@ public class WebSecurityConfig {
                 //회원가입, 로그인페이지, 메인 페이지
                 .requestMatchers("/members/login").permitAll()
                 .requestMatchers("/members/signup").permitAll()
-                .requestMatchers("/email/**").permitAll()
+                .requestMatchers("/emails/**").permitAll()
                 .requestMatchers(HttpMethod.GET,"/post/**").permitAll()
 
                 .anyRequest().authenticated()

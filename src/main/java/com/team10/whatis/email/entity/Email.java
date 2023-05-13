@@ -16,7 +16,6 @@ public class Email {
 
     private Email(String email) {
         this.email = email;
-        this.code = code;
     }
     private void setCode(String code){
         this.code = code;
