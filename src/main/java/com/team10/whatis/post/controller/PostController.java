@@ -27,7 +27,7 @@ public class PostController {
 
     @PutMapping(value = "/{id}/info", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseDto<?> updatePostIndo(@PathVariable Long id,
-                                         @RequestPart(value = "postInfoRequestDto") PostInfoRequestDto postInfoRequestDto,
+                                         @Valid @RequestPart(value = "postInfoRequestDto") PostInfoRequestDto postInfoRequestDto,
                                          @RequestParam(value="thumbnail", required = false) MultipartFile multipartFile,
                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.updatePostInfo(id, postInfoRequestDto, multipartFile, userDetails.getMember());
@@ -35,7 +35,7 @@ public class PostController {
 
     @PutMapping("/{id}/story")
     public ResponseDto<?> updatePostStory(@PathVariable Long id,
-                                          @RequestPart(value = "postStoryRequestDto") PostStoryRequestDto postStoryRequestDto,
+                                          @Valid @RequestPart(value = "postStoryRequestDto") PostStoryRequestDto postStoryRequestDto,
                                           @RequestParam(value="projectImage", required = false) MultipartFile image,
                                           @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.updatePostStory(id, postStoryRequestDto, image, userDetails.getMember());
