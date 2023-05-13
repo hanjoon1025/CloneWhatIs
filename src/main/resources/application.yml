@@ -1,6 +1,6 @@
 spring:
   profiles:
-    include: secret
+    include: secret, aws
   jpa:
     properties:
       hibernate:
