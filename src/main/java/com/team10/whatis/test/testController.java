@@ -9,7 +9,7 @@ public class testController {
 
     @GetMapping("/hello")
     public String helloWorld(){
-        return "CICD 동작확인4 오후 2시 33분 번째";
+        return "CICD 동작확인5 오후 2시 43분 번째";
     }
 
 }
