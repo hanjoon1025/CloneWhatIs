@@ -82,12 +82,17 @@ public class PostService {
     /**
      * 프로젝트 스토리 업데이트
      */
-    public ResponseDto<?> updatePostStory(Long id, PostStoryRequestDto postStoryRequestDto, MultipartFile image) {
+    public ResponseDto<?> updatePostStory(Long id, PostStoryRequestDto postStoryRequestDto, MultipartFile multipartFile) {
         Post post = postValidator.validateIsExistPost(id);
-        String projectImageUrl = uploadImage(image);
+
+        //프로젝트 이미지 변경
+        if (multipartFile != null) {
+            String projectImageUrl = uploadImage(multipartFile);
+            post.setProjectImage(projectImageUrl);
+        }
 
         //프로젝트 스토리 변경
-        post.updatePostStory(postStoryRequestDto, projectImageUrl);
+        post.updatePostStory(postStoryRequestDto);
         return ResponseDto.setSuccess(null);
     }
 

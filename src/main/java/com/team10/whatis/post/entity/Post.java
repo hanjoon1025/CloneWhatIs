@@ -48,6 +48,7 @@ public class Post extends TimeStamped {
     private int price;
 
     //프로젝트 이미지
+    @ColumnDefault(value = "'https://song-github-actions-s3-bucket.s3.ap-northeast-2.amazonaws.com/defaultImage.jpg'")
     private String projectImage;
 
     //마감기한
@@ -75,10 +76,9 @@ public class Post extends TimeStamped {
         this.deadLine = postInfoRequestDto.getDeadLine();
     }
 
-    public void updatePostStory(PostStoryRequestDto postStoryRequestDto, String projectImage) {
+    public void updatePostStory(PostStoryRequestDto postStoryRequestDto) {
         this.summary = postStoryRequestDto.getSummary();
         this.storyBoard = postStoryRequestDto.getStoryBoard();
-        this.projectImage = projectImage;
     }
 
     public void saveTags(Tag tag) {

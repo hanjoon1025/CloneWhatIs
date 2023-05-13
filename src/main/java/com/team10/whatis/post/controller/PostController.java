@@ -34,8 +34,8 @@ public class PostController {
 
     @PutMapping("/{id}/story")
     public ResponseDto<?> updatePostStory(@PathVariable Long id,
-                                          @Valid @RequestBody PostStoryRequestDto postStoryRequestDto,
-                                          @RequestParam(value="projectImage") MultipartFile image) {
+                                          @RequestPart(value = "postStoryRequestDto") PostStoryRequestDto postStoryRequestDto,
+                                          @RequestParam(value="projectImage", required = false) MultipartFile image) {
         return postService.updatePostStory(id, postStoryRequestDto, image);
     }
 }
