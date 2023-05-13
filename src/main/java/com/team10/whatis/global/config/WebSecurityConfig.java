@@ -35,7 +35,7 @@ public class WebSecurityConfig {
         // h2-console 사용 및 resources 접근 허용 설정
         return web -> web.ignoring()
                 //h2 콘솔
-                //.requestMatchers(PathRequest.toH2Console())
+                .requestMatchers(PathRequest.toH2Console())
                 //static 파일들
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
                 //Swagger (필요할까요?)
@@ -53,7 +53,7 @@ public class WebSecurityConfig {
                 //회원가입, 로그인페이지, 메인 페이지
                 .requestMatchers("/members/login").permitAll()
                 .requestMatchers("/members/signup").permitAll()
-                .requestMatchers("/members/auth").permitAll()
+                .requestMatchers("/emails/**").permitAll()
                 .requestMatchers(HttpMethod.GET,"/post/**").permitAll()
 
                 .anyRequest().authenticated()

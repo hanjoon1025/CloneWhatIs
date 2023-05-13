@@ -32,6 +32,9 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.boot:spring-boot-devtools'
 
+    // email 인증 디펜던시 추가
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
     //Spring Security
     testImplementation 'org.springframework.security:spring-security-test'
 
