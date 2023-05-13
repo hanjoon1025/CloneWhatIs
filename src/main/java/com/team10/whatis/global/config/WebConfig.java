@@ -1,5 +1,6 @@
 package com.team10.whatis.global.config;
 
+import com.team10.whatis.global.jwt.JwtUtil;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,8 +35,15 @@ public class WebConfig implements WebMvcConfigurer {
         return bean;
     }
 
+
+    //WebMvcConfigurer 사용해서 CORS 세팅
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-
+        registry.addMapping("/**")
+                .allowedHeaders("*")
+                .allowedMethods("GET", "POST", "PUT", "DELETE" )
+                .allowedOrigins("http://localhost:3000")
+                .exposedHeaders(JwtUtil.ACCESS_TOKEN)
+                .exposedHeaders(JwtUtil.REFRESH_TOKEN);
     }
 }
