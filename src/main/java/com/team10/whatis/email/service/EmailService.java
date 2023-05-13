@@ -24,6 +24,7 @@ import java.util.Random;
 @Slf4j
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class EmailService {
 
     private final JavaMailSender javaMailSender;
@@ -71,7 +72,6 @@ public class EmailService {
         MimeMessage 객체 안에 내가 전송할 메일의 내용을 담아준다.
         bean으로 등록해둔 javaMailSender 객체를 사용하여 이메일 send
      */
-    @Transactional
     public ResponseDto<?> sendMessage(EmailRequestDto emailRequestDto){
         String code = createKey(); // 인증코드 생성
         Email email = Email.saveEmail(emailRequestDto); // 이메일 객체 생성
@@ -93,13 +93,19 @@ public class EmailService {
         log.info("인증 코드 : "+code);
         return ResponseDto.setSuccess(null);
     }
-
+    /*
+        DB에 Email테이블에서 인증코드와 일치하는지 판별,
+        일치여부와 상관없이 해당 레코드는 무조건 삭제
+     */
     public ResponseDto<?> codeCheck(CodeRequestDto codeRequestDto){
         Email findEmail = emailRepository.findById(codeRequestDto.getEmail()).orElseThrow(() -> new IllegalArgumentException("인증을 요청한 이메일이 아닙니다."));
-        if(!findEmail.getCode().equals(codeRequestDto.getCode())){
-            throw new IllegalArgumentException("인증코드가 일치하지 않습니다.");
-        }
         emailRepository.deleteById(codeRequestDto.getEmail());
+        System.out.println("확인코드 : "+findEmail.getCode());
+        System.out.println("보낸코드 : "+codeRequestDto.getCode());
+        System.out.println(findEmail.getCode().equals(codeRequestDto.getCode()));
+        if(!findEmail.getCode().equals(codeRequestDto.getCode())){
+            return ResponseDto.setBadRequest("인증 코드가 일치하지 않습니다.",null);
+        }
         return ResponseDto.setSuccess(null);
     }
 }
