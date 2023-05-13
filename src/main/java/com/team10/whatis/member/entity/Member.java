@@ -32,8 +32,5 @@ public class Member {
 
     public static Member saveMember(MemberRequestDto requestDto, String password){
         return new Member(requestDto.getUsername(), password, requestDto.getEmail());
-
     }
-
-
 }
