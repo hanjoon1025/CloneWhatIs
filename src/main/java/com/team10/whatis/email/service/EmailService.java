@@ -3,6 +3,7 @@ package com.team10.whatis.email.service;
 import com.team10.whatis.email.dto.EmailRequestDto;
 import com.team10.whatis.email.entity.Email;
 import com.team10.whatis.email.repository.EmailRepository;
+import com.team10.whatis.global.dto.ResponseDto;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
@@ -70,18 +71,25 @@ public class EmailService {
         bean으로 등록해둔 javaMailSender 객체를 사용하여 이메일 send
      */
     @Transactional
-    public String sendSimpleMessage(EmailRequestDto emailRequestDto)throws Exception {
+    public ResponseDto sendSimpleMessage(EmailRequestDto emailRequestDto){
         String code = createKey(); // 인증코드 생성
         Email email = Email.saveEmail(emailRequestDto); // 이메일 객체 생성
-        MimeMessage message = createMessage(email.getEmail(),code); // 전송 메시지 삭성 메서드 호출
+        MimeMessage message = null;
+        try {
+            message = createMessage(email.getEmail(),code); // 전송 메시지 삭성 메서드 호출
+        } catch (MessagingException e) {
+            throw new IllegalStateException("메일 전송 실패");
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalStateException("메일 전송 실패");
+        }
         try{
             javaMailSender.send(message); // 메일 발송
         }catch(MailException es){
-            es.printStackTrace();
-            throw new IllegalArgumentException();
+            throw new IllegalStateException("메일 전송 실패");
         }
         Email.updateCode(email,code);
         emailRepository.save(email);
-        return code; // 메일로 보냈던 인증 코드를 서버로 리턴
+        log.info("인증 코드 : "+code);
+        return ResponseDto.setSuccess(null);
     }
 }

@@ -18,9 +18,7 @@ public class EmailController {
 
     @PostMapping("/auth")
     @ResponseBody
-    public ResponseDto mailSend(@RequestBody EmailRequestDto emailRequestDto) throws Exception {
-        String code = emailService.sendSimpleMessage(emailRequestDto);
-        log.info("인증코드 : " + code);
-        return ResponseDto.setSuccess(null);
+    public ResponseDto mailSend(@RequestBody EmailRequestDto emailRequestDto){
+        return emailService.sendSimpleMessage(emailRequestDto);
     }
 }
