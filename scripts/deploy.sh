@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-#REPOSITORY=/home/ubuntu/Clone_What_Is
-#cd $REPOSITORY
+REPOSITORY=/home/ubuntu/Clone_What_Is
+cd $REPOSITORY
 
 APP_NAME=Clone_What_Is
 JAR_NAME=$(find . -name "*.jar" | sort | tail -n 1)
