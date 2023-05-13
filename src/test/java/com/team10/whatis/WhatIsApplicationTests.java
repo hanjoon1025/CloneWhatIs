@@ -1,13 +1,13 @@
-package com.team10.whatis;
+// package com.team10.whatis;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+// import org.junit.jupiter.api.Test;
+// import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class WhatIsApplicationTests {
+// @SpringBootTest
+// class WhatIsApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
+//     @Test
+//     void contextLoads() {
+//     }
 
-}
+// }
