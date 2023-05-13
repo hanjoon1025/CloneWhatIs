@@ -32,6 +32,9 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.boot:spring-boot-devtools'
 
+    // email 인증 디펜던시 추가
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
     //Spring Security
     testImplementation 'org.springframework.security:spring-security-test'
 
@@ -45,6 +48,10 @@ dependencies {
 
     //s3
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+    //mysql
+    implementation 'mysql:mysql-connector-java:8.0.26'
+    runtimeOnly 'mysql:mysql-connector-java'
 }
 
 tasks.named('test') {

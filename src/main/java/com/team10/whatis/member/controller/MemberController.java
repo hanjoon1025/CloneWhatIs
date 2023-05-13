@@ -17,22 +17,14 @@ public class MemberController {
 
     @PostMapping("/signup")
     public ResponseDto<?> signup(@RequestBody MemberRequestDto requestDto) {
-        return ResponseDto.setSuccess(memberService.signup(requestDto));
+        return memberService.signup(requestDto);
 
     }
 
     @PostMapping("/login")
     public ResponseDto<?> login(@RequestBody MemberRequestDto.login requestDto, HttpServletResponse response) {
-        return ResponseDto.setSuccess(memberService.login(requestDto,response));
+        return memberService.login(requestDto,response);
     }
-
-    @PostMapping("/auth")
-    public ResponseDto<?> authEmail(@RequestBody MemberRequestDto.auth requestDto) {
-//       return ResponseDto.setSuccess(memberService.authEmail(requestDto));
-        return ResponseDto.setSuccess("TESTING");
-    }
-
-
 
 
 }

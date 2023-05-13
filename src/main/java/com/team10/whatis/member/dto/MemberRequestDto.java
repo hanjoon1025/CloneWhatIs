@@ -8,19 +8,16 @@ import lombok.NoArgsConstructor;
 public class MemberRequestDto {
 
     private String email;
-    private String password;
     private String username;
+    private String password;
     private String passwordCheck;
-    private int code;
 
-    @Getter
-    public static class auth {
-        private String email;
-    }
     @Getter
     public static class login {
         private String email;
         private String password;
     }
+
+
 
 }
