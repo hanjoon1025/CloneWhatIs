@@ -58,6 +58,7 @@ public class Post extends TimeStamped {
     private String summary;
 
     //스토리보드
+    @Column(length = 1000)
     private String storyBoard;
 
     //검색 태그
