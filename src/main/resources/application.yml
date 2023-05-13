@@ -13,7 +13,7 @@ logging.level:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://database-1.cgjlvj9uzfol.ap-northeast-2.rds.amazonaws.com:3306/demo?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://database-1.cgjlvj9uzfol.ap-northeast-2.rds.amazonaws.com:3306/sys?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: admin
     password: qwer1234
 
