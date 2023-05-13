@@ -21,6 +21,7 @@ public class MemberController {
     @GetMapping("/signup")
     public ResponseDto<?> signup(@RequestBody MemberRequestDto requestDto) {
         return ResponseDto.setSuccess(memberService.signup(requestDto));
+
     }
 
     @GetMapping("/login")
