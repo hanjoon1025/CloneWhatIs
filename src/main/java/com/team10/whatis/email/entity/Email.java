@@ -1,5 +1,6 @@
 package com.team10.whatis.email.entity;
 
+import com.team10.whatis.email.dto.EmailRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,10 @@ public class Email {
     }
     private void setCode(String code){
         this.code = code;
+    }
+
+    public static Email saveEmail(EmailRequestDto requestDto){
+        return new Email(requestDto.getEmail());
     }
 
     public static void updateCode(Email email,String code){
