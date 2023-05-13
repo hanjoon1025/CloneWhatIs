@@ -31,6 +31,9 @@ cp "$BUILD_PATH" "$DEPLOY_PATH"
 APPLICATION_JAR_NAME=Clone_What_Is.jar
 APPLICATION_JAR="$DEPLOY_PATH$APPLICATION_JAR_NAME"
 
+# JAR 파일에 실행 권한 설정
+sudo chmod +x "$APPLICATION_JAR"
+
 echo "> 현재 실행 중인 애플리케이션 PID 확인"
 CURRENT_PID=$(pgrep -f "$APPLICATION_JAR_NAME")
 
