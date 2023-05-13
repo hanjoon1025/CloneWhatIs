@@ -3,7 +3,6 @@ os: linux
 files:
   - source: /
     destination: /home/ubuntu/Clone_What_Is
-    overwrite: yes
 permissions:
   - object: /home/ubuntu/Clone_What_Is/
     owner: ubuntu
@@ -13,4 +12,3 @@ hooks:
     - location: scripts/deploy.sh
       timeout: 60
       runas: ubuntu
-
