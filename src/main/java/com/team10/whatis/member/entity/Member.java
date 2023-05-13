@@ -1,6 +1,7 @@
 package com.team10.whatis.member.entity;
 
 
+import com.team10.whatis.member.dto.MemberRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,11 @@ public class Member {
         this.username = username;
         this.password = password;
         this.email = email;
+    }
+
+    public static Member saveMember(MemberRequestDto requestDto, String password){
+        return new Member(requestDto.getUsername(), password, requestDto.getEmail());
+
     }
 
 

@@ -1,6 +1,8 @@
 package com.team10.whatis.global.config;
 
 
+import com.team10.whatis.global.jwt.JwtAuthFilter;
+import com.team10.whatis.global.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -13,12 +15,13 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class WebSecurityConfig {
-
+    private final JwtUtil jwtUtil;
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -50,9 +53,9 @@ public class WebSecurityConfig {
                 .requestMatchers("/members/auth").permitAll()
                 .requestMatchers(HttpMethod.GET,"/post/**").permitAll()
 
-                .anyRequest().authenticated();
+                .anyRequest().authenticated()
                 // JWT 인증/인가를 사용하기 위한 설정
-                //.and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
         // 이 설정을 해주지 않으면 밑의 corsConfigurationSource가 적용되지 않는다
         //http.cors();
