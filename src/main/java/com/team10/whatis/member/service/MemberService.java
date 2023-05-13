@@ -26,29 +26,35 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    public String signup(MemberRequestDto requestDto) {
+    public ResponseDto<?> signup(MemberRequestDto requestDto) {
+        //비밀번호 검증 홧인
+        if(!requestDto.getPassword().equals(requestDto.getPasswordCheck())){
+            return ResponseDto.setBadRequest("비밀번호가 일치하지 않습니다.", null);
+        }
+
+        // 비밀번호 암호화
         String password = passwordEncoder.encode(requestDto.getPassword());
 
         // 회원 중복 확인
         Optional<Member> found = memberRepository.findByEmail(requestDto.getEmail());
         if (found.isPresent()) {
-             ResponseDto.setBadRequest("이미 등록된 회원입니다.", null);
+             return ResponseDto.setBadRequest("이미 등록된 회원입니다.", null);
         }
 
         // 사용자 DB에 저장
         memberRepository.saveAndFlush(Member.saveMember(requestDto, password));
 
-        return null;
+        return ResponseDto.setSuccess(null);
     }
 
-    public String login(MemberRequestDto.login requestDto, HttpServletResponse response) {
+    public ResponseDto<?> login(MemberRequestDto.login requestDto, HttpServletResponse response) {
         // 사용자 확인
         Member member = memberRepository.findByEmail(requestDto.getEmail()).orElseThrow(
                 () -> new IllegalArgumentException("이메일 또는 비밀번호가 일치하지 않습니다.")
         );
         // 비밀번호 확인
         if(!passwordEncoder.matches(requestDto.getPassword(), member.getPassword())){
-            throw new IllegalArgumentException("이메일 또는 비밀번호가 일치하지 않습니다.");
+            return ResponseDto.setBadRequest("이메일 또는 비밀번호가 일치하지 않습니다.");
         }
 
         //Token 생성
@@ -68,7 +74,7 @@ public class MemberService {
         //header에 accesstoken, refreshtoken 추가
         response.addHeader(JwtUtil.ACCESS_TOKEN, tokenDto.getAccessToken());
         response.addHeader(JwtUtil.REFRESH_TOKEN, tokenDto.getRefreshToken());
-        return null;
+        return ResponseDto.setSuccess(null);
     }
 
 }
