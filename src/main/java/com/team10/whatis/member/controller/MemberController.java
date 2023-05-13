@@ -17,7 +17,7 @@ public class MemberController {
 
     @GetMapping("/signup")
     public ResponseDto<?> signup() {
-        return ResponseDto.setSuccess("제발 되라222");
+        return ResponseDto.setSuccess("제발 되라333");
     }
 
     @GetMapping("/login")
