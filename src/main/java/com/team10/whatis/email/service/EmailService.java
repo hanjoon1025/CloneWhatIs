@@ -1,5 +1,6 @@
 package com.team10.whatis.email.service;
 
+import com.team10.whatis.email.dto.CodeRequestDto;
 import com.team10.whatis.email.dto.EmailRequestDto;
 import com.team10.whatis.email.entity.Email;
 import com.team10.whatis.email.repository.EmailRepository;
@@ -71,7 +72,7 @@ public class EmailService {
         bean으로 등록해둔 javaMailSender 객체를 사용하여 이메일 send
      */
     @Transactional
-    public ResponseDto sendMessage(EmailRequestDto emailRequestDto){
+    public ResponseDto<?> sendMessage(EmailRequestDto emailRequestDto){
         String code = createKey(); // 인증코드 생성
         Email email = Email.saveEmail(emailRequestDto); // 이메일 객체 생성
         MimeMessage message = null;
@@ -90,6 +91,15 @@ public class EmailService {
         Email.updateCode(email,code);
         emailRepository.save(email);
         log.info("인증 코드 : "+code);
+        return ResponseDto.setSuccess(null);
+    }
+
+    public ResponseDto<?> codeCheck(CodeRequestDto codeRequestDto){
+        Email findEmail = emailRepository.findById(codeRequestDto.getEmail()).orElseThrow(() -> new IllegalStateException("인증 실패"));
+        if(!findEmail.getCode().equals(codeRequestDto.getCode())){
+            throw new IllegalStateException("인증코드가 일치하지 않습니다.");
+        }
+        emailRepository.deleteById(codeRequestDto.getEmail());
         return ResponseDto.setSuccess(null);
     }
 }

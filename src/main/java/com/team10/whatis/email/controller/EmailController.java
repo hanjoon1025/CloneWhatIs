@@ -1,5 +1,6 @@
 package com.team10.whatis.email.controller;
 
+import com.team10.whatis.email.dto.CodeRequestDto;
 import com.team10.whatis.email.dto.EmailRequestDto;
 import com.team10.whatis.email.entity.Email;
 import com.team10.whatis.email.service.EmailService;
@@ -17,8 +18,12 @@ public class EmailController {
     private final EmailService emailService;
 
     @PostMapping("/auth")
-    @ResponseBody
-    public ResponseDto mailSend(@RequestBody EmailRequestDto emailRequestDto){
+    public ResponseDto<?> mailSend(@RequestBody EmailRequestDto emailRequestDto){
         return emailService.sendMessage(emailRequestDto);
+    }
+
+    @PostMapping("/check")
+    public ResponseDto<?> codeCheck(@RequestBody CodeRequestDto codeRequestDto){
+        return emailService.codeCheck(codeRequestDto);
     }
 }
