@@ -63,8 +63,16 @@ public class PostService {
 
         //태그 중복 제거
         List<String> distinctTags = postInfoRequestDto.getSearchTag().stream().distinct().collect(Collectors.toList());
+        makeTag(distinctTags, post);
 
-        for (String tagName : distinctTags) {
+        return ResponseDto.setSuccess(null);
+    }
+
+    /**
+     * 프로젝트 태그 생성
+     */
+    public void makeTag(List<String> tags, Post post) {
+        for (String tagName : tags) {
             Tag tag = postValidator.validateIsExistTag(tagName);
 
             //태그가 존재하지 않으면 Tag 생성
@@ -76,7 +84,6 @@ public class PostService {
             //프로젝트에 tag 추가
             post.saveTags(tag);
         }
-        return ResponseDto.setSuccess(null);
     }
 
     /**
@@ -93,6 +100,15 @@ public class PostService {
 
         //프로젝트 스토리 변경
         post.updatePostStory(postStoryRequestDto);
+        return ResponseDto.setSuccess(null);
+    }
+
+    /**
+     * 프로젝트 삭제
+     */
+    public ResponseDto<?> deletePost(Long id) {
+        Post post = postValidator.validateIsExistPost(id);
+        postRepository.delete(post);
         return ResponseDto.setSuccess(null);
     }
 

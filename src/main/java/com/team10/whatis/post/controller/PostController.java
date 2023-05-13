@@ -38,4 +38,9 @@ public class PostController {
                                           @RequestParam(value="projectImage", required = false) MultipartFile image) {
         return postService.updatePostStory(id, postStoryRequestDto, image);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseDto<?> deletePost(@PathVariable Long id){
+        return postService.deletePost(id);
+    }
 }
