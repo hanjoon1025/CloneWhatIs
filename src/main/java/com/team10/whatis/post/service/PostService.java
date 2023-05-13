@@ -4,6 +4,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.team10.whatis.global.dto.ResponseDto;
 import com.team10.whatis.member.entity.Member;
+import com.team10.whatis.member.repository.MemberRepository;
 import com.team10.whatis.post.dto.PostInfoRequestDto;
 import com.team10.whatis.post.dto.PostRequestDto;
 import com.team10.whatis.post.dto.PostStoryRequestDto;
@@ -49,8 +50,9 @@ public class PostService {
     /**
      * 프로젝트 정보 업데이트
      */
-    public ResponseDto updatePostInfo(Long id, PostInfoRequestDto postInfoRequestDto, MultipartFile multipartFile) {
+    public ResponseDto updatePostInfo(Long id, PostInfoRequestDto postInfoRequestDto, MultipartFile multipartFile, Member member) {
         Post post = postValidator.validateIsExistPost(id);
+        postValidator.validatePostAuthor(post, member);
 
         //썸네일 변경
         if (multipartFile != null) {
@@ -89,8 +91,9 @@ public class PostService {
     /**
      * 프로젝트 스토리 업데이트
      */
-    public ResponseDto<?> updatePostStory(Long id, PostStoryRequestDto postStoryRequestDto, MultipartFile multipartFile) {
+    public ResponseDto<?> updatePostStory(Long id, PostStoryRequestDto postStoryRequestDto, MultipartFile multipartFile, Member member) {
         Post post = postValidator.validateIsExistPost(id);
+        postValidator.validatePostAuthor(post, member);
 
         //프로젝트 이미지 변경
         if (multipartFile != null) {
@@ -106,8 +109,10 @@ public class PostService {
     /**
      * 프로젝트 삭제
      */
-    public ResponseDto<?> deletePost(Long id) {
+    public ResponseDto<?> deletePost(Long id, Member member) {
         Post post = postValidator.validateIsExistPost(id);
+        postValidator.validatePostAuthor(post, member);
+
         postRepository.delete(post);
         return ResponseDto.setSuccess(null);
     }

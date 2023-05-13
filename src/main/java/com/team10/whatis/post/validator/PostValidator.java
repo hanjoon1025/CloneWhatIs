@@ -1,5 +1,6 @@
 package com.team10.whatis.post.validator;
 
+import com.team10.whatis.member.entity.Member;
 import com.team10.whatis.post.entity.Post;
 import com.team10.whatis.post.entity.Tag;
 import com.team10.whatis.post.repository.PostRepository;
@@ -7,6 +8,7 @@ import com.team10.whatis.post.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Component
@@ -19,7 +21,7 @@ public class PostValidator {
     //게시글 존재 여부 확인
     public Post validateIsExistPost(Long id) {
         return postRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않는 프로젝트입니다.")
+                () -> new NoSuchElementException("존재하지 않는 프로젝트입니다.")
         );
     }
 
@@ -32,5 +34,11 @@ public class PostValidator {
     public Tag validateIsExistTag(String tag) {
         Optional<Tag> findTag = tagRepository.findByTagName(tag);
         return findTag.orElse(null);
+    }
+
+    public void validatePostAuthor(Post post, Member member) {
+        if (!post.getMember().getEmail().equals(member.getEmail())){
+            throw new IllegalArgumentException("권한이 없습니다.");
+        }
     }
 }
