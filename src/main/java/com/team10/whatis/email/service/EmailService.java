@@ -71,7 +71,7 @@ public class EmailService {
         bean으로 등록해둔 javaMailSender 객체를 사용하여 이메일 send
      */
     @Transactional
-    public ResponseDto sendSimpleMessage(EmailRequestDto emailRequestDto){
+    public ResponseDto sendMessage(EmailRequestDto emailRequestDto){
         String code = createKey(); // 인증코드 생성
         Email email = Email.saveEmail(emailRequestDto); // 이메일 객체 생성
         MimeMessage message = null;

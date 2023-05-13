@@ -19,6 +19,6 @@ public class EmailController {
     @PostMapping("/auth")
     @ResponseBody
     public ResponseDto mailSend(@RequestBody EmailRequestDto emailRequestDto){
-        return emailService.sendSimpleMessage(emailRequestDto);
+        return emailService.sendMessage(emailRequestDto);
     }
 }
