@@ -16,6 +16,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @RequiredArgsConstructor
@@ -57,8 +60,8 @@ public class WebSecurityConfig {
                 // JWT 인증/인가를 사용하기 위한 설정
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
-        // 이 설정을 해주지 않으면 밑의 corsConfigurationSource가 적용되지 않는다
-        //http.cors();
+        // 이 설정을 해주지 않으면 밑의 cors가 적용되지 않는다
+        http.cors();
 
         // 401 Error 처리, Authorization 즉, 인증과정에서 실패할 시 처리
         //http.exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
@@ -66,15 +69,12 @@ public class WebSecurityConfig {
         return http.build();
     }
 
-    // 이 설정을 해주면, 우리가 설정한대로 CorsFilter가 Security의 filter에 추가되어
-    // 예비 요청에 대한 처리를 해주게 됩니다.
-    // CorsFilter의 동작 과정이 궁금하시면, CorsFilter의 소스코드를 들어가 보세요!
+//      이렇게 Spring Security만 사용해서 CORS를 적용할 수 있습니다
 //    @Bean
 //    public CorsConfigurationSource corsConfigurationSource(){
 //
 //        CorsConfiguration config = new CorsConfiguration();
 //
-//        // 사전에 약속된 출처를 명시
 //        config.addAllowedOriginPattern("*");
 //
 //        // 특정 헤더를 클라이언트 측에서 사용할 수 있게 지정
