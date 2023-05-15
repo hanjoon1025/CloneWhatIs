@@ -79,6 +79,7 @@ public class PostService {
      * 프로젝트 태그 생성
      */
     public void makeTag(List<String> tags, Post post) {
+        post.getTags().clear();
         for (String tagName : tags) {
             Tag tag = postValidator.validateIsExistTag(tagName);
 
