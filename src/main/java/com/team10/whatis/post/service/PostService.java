@@ -185,7 +185,6 @@ public class PostService {
         postValidator.validateIsFundingPost(post, member);
 
         FundPost fundPost = new FundPost(post, member);
-        post.updateTotalAmount();
         fundPostRepository.save(fundPost);
         return ResponseDto.setSuccess(null);
     }
