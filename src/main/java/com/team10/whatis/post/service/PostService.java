@@ -8,6 +8,7 @@ import com.team10.whatis.post.dto.PostInfoRequestDto;
 import com.team10.whatis.post.dto.PostRequestDto;
 import com.team10.whatis.post.dto.PostResponseDto;
 import com.team10.whatis.post.dto.PostStoryRequestDto;
+import com.team10.whatis.post.entity.Category;
 import com.team10.whatis.post.entity.FundPost;
 import com.team10.whatis.post.entity.Post;
 import com.team10.whatis.post.entity.Tag;
@@ -162,8 +163,14 @@ public class PostService {
     /**
      * 프로젝트 전체 조회
      */
-    public ResponseDto<List<PostResponseDto>> findAllPosts(Pageable pageable) {
-        Page<Post> allPosts = postRepository.findAll(pageable);
+    public ResponseDto<List<PostResponseDto>> findAllPosts(Pageable pageable, Category category) {
+        Page<Post> allPosts = null;
+
+        if (category == null) {
+            allPosts = postRepository.findAll(pageable);
+        } else {
+            allPosts = postRepository.findAllByCategory(pageable, category);
+        }
         List<PostResponseDto> postList = allPosts.getContent().stream().map(PostResponseDto::new).collect(Collectors.toList());
 
         //TODO 프로젝트마다 좋아요 여부 확인
