@@ -4,6 +4,7 @@ import com.team10.whatis.email.dto.CodeRequestDto;
 import com.team10.whatis.email.dto.EmailRequestDto;
 import com.team10.whatis.email.entity.Email;
 import com.team10.whatis.email.repository.EmailRepository;
+import com.team10.whatis.email.validator.EmailValidator;
 import com.team10.whatis.global.dto.ResponseDto;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
@@ -29,6 +30,7 @@ public class EmailService {
 
     private final JavaMailSender javaMailSender;
     private final EmailRepository emailRepository;
+    private final EmailValidator emailValidator;
 
     @Value("${spring.mail.username}")
     private String id;
@@ -98,14 +100,9 @@ public class EmailService {
         일치여부와 상관없이 해당 레코드는 무조건 삭제
      */
     public ResponseDto<?> codeCheck(CodeRequestDto codeRequestDto){
-        Email findEmail = emailRepository.findById(codeRequestDto.getEmail()).orElseThrow(() -> new IllegalArgumentException("인증을 요청한 이메일이 아닙니다."));
+        Email findEmail = emailValidator.validateExistEmail(codeRequestDto.getEmail());
         emailRepository.deleteById(codeRequestDto.getEmail());
-        System.out.println("확인코드 : "+findEmail.getCode());
-        System.out.println("보낸코드 : "+codeRequestDto.getCode());
-        System.out.println(findEmail.getCode().equals(codeRequestDto.getCode()));
-        if(!findEmail.getCode().equals(codeRequestDto.getCode())){
-            return ResponseDto.setBadRequest("인증 코드가 일치하지 않습니다.",null);
-        }
+        emailValidator.validateIsCorrectCode(findEmail, codeRequestDto.getCode());
         return ResponseDto.setSuccess(null);
     }
 }
