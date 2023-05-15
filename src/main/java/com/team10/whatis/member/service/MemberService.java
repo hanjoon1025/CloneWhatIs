@@ -8,6 +8,7 @@ import com.team10.whatis.global.jwt.repository.RefreshTokenRepository;
 import com.team10.whatis.member.dto.MemberRequestDto;
 import com.team10.whatis.member.entity.Member;
 import com.team10.whatis.member.repository.MemberRepository;
+import com.team10.whatis.member.validator.MemberValidator;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,21 +26,17 @@ public class MemberService {
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final MemberValidator memberValidator;
 
     public ResponseDto<?> signup(MemberRequestDto requestDto) {
         //비밀번호 검증 홧인
-        if(!requestDto.getPassword().equals(requestDto.getPasswordCheck())){
-            return ResponseDto.setBadRequest("비밀번호가 일치하지 않습니다.", null);
-        }
+        memberValidator.validatePasswordCheck(requestDto);
 
         // 비밀번호 암호화
         String password = passwordEncoder.encode(requestDto.getPassword());
 
         // 회원 중복 확인
-        Optional<Member> found = memberRepository.findByEmail(requestDto.getEmail());
-        if (found.isPresent()) {
-             return ResponseDto.setBadRequest("이미 등록된 회원입니다.", null);
-        }
+        memberValidator.validateIsExistMember(requestDto.getEmail());
 
         // 사용자 DB에 저장
         memberRepository.saveAndFlush(Member.saveMember(requestDto, password));
@@ -48,14 +45,8 @@ public class MemberService {
     }
 
     public ResponseDto<?> login(MemberRequestDto.login requestDto, HttpServletResponse response) {
-        // 사용자 확인
-        Member member = memberRepository.findByEmail(requestDto.getEmail()).orElseThrow(
-                () -> new IllegalArgumentException("이메일 또는 비밀번호가 일치하지 않습니다.")
-        );
-        // 비밀번호 확인
-        if(!passwordEncoder.matches(requestDto.getPassword(), member.getPassword())){
-            return ResponseDto.setBadRequest("이메일 또는 비밀번호가 일치하지 않습니다.");
-        }
+        // 이메일, 비밀번호 확인
+        Member member = memberValidator.validateEmailAndPassword(requestDto);
 
         //Token 생성
         TokenDto tokenDto = jwtUtil.createAllToken(member.getEmail());
