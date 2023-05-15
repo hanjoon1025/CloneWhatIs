@@ -92,4 +92,8 @@ public class Post extends TimeStamped {
         postTag.setPost(this);
         tags.add(postTag);
     }
+
+    public void updateTotalAmount() {
+        this.totalAmount += price;
+    }
 }
