@@ -8,8 +8,10 @@ import com.team10.whatis.post.dto.PostInfoRequestDto;
 import com.team10.whatis.post.dto.PostRequestDto;
 import com.team10.whatis.post.dto.PostResponseDto;
 import com.team10.whatis.post.dto.PostStoryRequestDto;
+import com.team10.whatis.post.entity.FundPost;
 import com.team10.whatis.post.entity.Post;
 import com.team10.whatis.post.entity.Tag;
+import com.team10.whatis.post.repository.FundPostRepository;
 import com.team10.whatis.post.repository.PostRepository;
 import com.team10.whatis.post.repository.TagRepository;
 import com.team10.whatis.post.validator.PostValidator;
@@ -36,6 +38,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final PostValidator postValidator;
     private final TagRepository tagRepository;
+    private final FundPostRepository fundPostRepository;
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
     private final AmazonS3 amazonS3;
@@ -164,5 +167,18 @@ public class PostService {
 
         //TODO 프로젝트마다 좋아요 여부 확인
         return ResponseDto.setSuccess(postList);
+    }
+
+    /**
+     * 프로젝트 펀딩
+     */
+    public ResponseDto<?> fundingPost(Long id, Member member) {
+        Post post = postValidator.validateIsExistPost(id);
+        postValidator.validateIsFundingPost(post, member);
+
+        FundPost fundPost = new FundPost(post, member);
+        post.updateTotalAmount();
+        fundPostRepository.save(fundPost);
+        return ResponseDto.setSuccess(null);
     }
 }

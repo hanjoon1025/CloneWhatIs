@@ -2,6 +2,7 @@ package com.team10.whatis.member.entity;
 
 
 import com.team10.whatis.member.dto.MemberRequestDto;
+import com.team10.whatis.post.entity.FundPost;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

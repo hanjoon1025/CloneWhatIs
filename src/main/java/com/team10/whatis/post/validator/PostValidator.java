@@ -3,6 +3,7 @@ package com.team10.whatis.post.validator;
 import com.team10.whatis.member.entity.Member;
 import com.team10.whatis.post.entity.Post;
 import com.team10.whatis.post.entity.Tag;
+import com.team10.whatis.post.repository.FundPostRepository;
 import com.team10.whatis.post.repository.PostRepository;
 import com.team10.whatis.post.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ public class PostValidator {
 
     private final PostRepository postRepository;
     private final TagRepository tagRepository;
+    private final FundPostRepository fundPostRepository;
 
     //게시글 존재 여부 확인
     public Post validateIsExistPost(Long id) {
@@ -40,5 +42,11 @@ public class PostValidator {
         if (!post.getMember().getEmail().equals(member.getEmail())){
             throw new IllegalArgumentException("권한이 없습니다.");
         }
+    }
+
+    public void validateIsFundingPost(Post post, Member member) {
+        fundPostRepository.findByPostIdAndMemberId(post.getId(), member.getId()).ifPresent(fundPost -> {
+            throw new IllegalArgumentException("이미 펀딩한 프로젝트입니다.");
+        });
     }
 }

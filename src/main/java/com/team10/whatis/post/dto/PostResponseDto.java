@@ -4,6 +4,8 @@ import com.team10.whatis.post.entity.Post;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 public class PostResponseDto {
@@ -13,8 +15,9 @@ public class PostResponseDto {
     private int targetAmount;
     private int totalAmount;
     private LocalDate deadLine;
-    private int percentage;
+    private double percentage;
     private String name;
+    private List<String> tags = new ArrayList<>();
 
     //TODO likeStatus 추가 필요(추가시 주석 제거)
 
@@ -27,9 +30,10 @@ public class PostResponseDto {
         this.deadLine = post.getDeadLine();
         this.percentage = calcPercentage(post.getTotalAmount(), post.getTargetAmount());
         this.name = post.getMember().getUsername();
+        post.getTags().forEach(tag -> this.tags.add(tag.getTag().getName()));
     }
 
-    private int calcPercentage(int totalAmount, int targetAmount) {
-        return totalAmount / targetAmount * 100;
+    private double calcPercentage(int totalAmount, int targetAmount) {
+        return (double) totalAmount * 100 / targetAmount;
     }
 }
