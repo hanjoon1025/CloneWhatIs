@@ -3,10 +3,10 @@ package com.team10.whatis.member.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.team10.whatis.global.dto.ResponseDto;
+import com.team10.whatis.global.jwt.JwtUtil;
 import com.team10.whatis.member.dto.MemberRequestDto;
 import com.team10.whatis.member.service.KakaoService;
 import com.team10.whatis.member.service.MemberService;
-import com.team10.whatis.global.jwt.JwtUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

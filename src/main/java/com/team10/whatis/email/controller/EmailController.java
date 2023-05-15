@@ -2,12 +2,14 @@ package com.team10.whatis.email.controller;
 
 import com.team10.whatis.email.dto.CodeRequestDto;
 import com.team10.whatis.email.dto.EmailRequestDto;
-import com.team10.whatis.email.entity.Email;
 import com.team10.whatis.email.service.EmailService;
 import com.team10.whatis.global.dto.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RequiredArgsConstructor

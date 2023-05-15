@@ -1,22 +1,20 @@
 package com.team10.whatis.member.service;
 
 
-
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.team10.whatis.global.dto.ResponseDto;
+import com.team10.whatis.global.jwt.JwtUtil;
 import com.team10.whatis.global.jwt.dto.TokenDto;
 import com.team10.whatis.global.jwt.entity.RefreshToken;
 import com.team10.whatis.global.jwt.repository.RefreshTokenRepository;
 import com.team10.whatis.member.dto.KakaoUserInfoDto;
 import com.team10.whatis.member.entity.Member;
 import com.team10.whatis.member.repository.MemberRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import com.team10.whatis.global.jwt.JwtUtil;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -26,8 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-
-import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.Optional;
 import java.util.UUID;
