@@ -38,7 +38,6 @@ public class MemberController {
         ResponseDto<?> result = kakaoService.kakaoLogin(code, response);
 
         // Cookie 생성 및 직접 브라우저에 Set
-        // 앞선 코드에서는 createToken을 가져와서 쿠키를 생성했지만,
         // 이제 response의 header에서 token을 가져옵니다.
         String createToken = response.getHeader(JwtUtil.ACCESS_TOKEN);
         Cookie cookie = new Cookie(JwtUtil.ACCESS_TOKEN, createToken.substring(7));
