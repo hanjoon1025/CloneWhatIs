@@ -15,7 +15,7 @@ public class PostResponseDto {
     private int targetAmount;
     private int totalAmount;
     private LocalDate deadLine;
-    private int percentage;
+    private double percentage;
     private String name;
     private List<String> tags = new ArrayList<>();
 
@@ -33,7 +33,7 @@ public class PostResponseDto {
         post.getTags().forEach(tag -> this.tags.add(tag.getTag().getName()));
     }
 
-    private int calcPercentage(int totalAmount, int targetAmount) {
-        return totalAmount / targetAmount * 100;
+    private double calcPercentage(int totalAmount, int targetAmount) {
+        return (double) totalAmount * 100 / targetAmount;
     }
 }
