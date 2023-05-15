@@ -24,13 +24,28 @@ public class Member {
     @Column(nullable = false, unique = true)
     private String email;
 
+    private Long kakaoId;
+
     private Member(String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;
     }
 
+    public Member(String username, Long kakaoId, String password, String email) {
+        this.username = username;
+        this.password = password;
+        this.kakaoId = kakaoId;
+        this.email = email;
+    }
+
     public static Member saveMember(MemberRequestDto requestDto, String password){
         return new Member(requestDto.getUsername(), password, requestDto.getEmail());
     }
+
+    public Member kakaoIdUpdate(Long kakaoId) {
+        this.kakaoId = kakaoId;
+        return this;
+    }
 }
+
