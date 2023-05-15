@@ -30,17 +30,17 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        // h2-console 사용 및 resources 접근 허용 설정
-        return web -> web.ignoring()
-                //h2 콘솔
-                .requestMatchers(PathRequest.toH2Console())
-                //static 파일들
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
-                //Swagger (필요할까요?)
-                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**");
-    }
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        // h2-console 사용 및 resources 접근 허용 설정
+//        return web -> web.ignoring()
+//                //h2 콘솔
+//                .requestMatchers(PathRequest.toH2Console())
+//                //static 파일들
+//                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
+//                //Swagger (필요할까요?)
+//                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**");
+//    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
