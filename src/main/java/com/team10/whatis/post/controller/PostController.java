@@ -6,6 +6,7 @@ import com.team10.whatis.post.dto.PostInfoRequestDto;
 import com.team10.whatis.post.dto.PostRequestDto;
 import com.team10.whatis.post.dto.PostResponseDto;
 import com.team10.whatis.post.dto.PostStoryRequestDto;
+import com.team10.whatis.post.entity.Category;
 import com.team10.whatis.post.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -54,11 +55,12 @@ public class PostController {
 
     @GetMapping
     public ResponseDto<List<PostResponseDto>> postList(@PageableDefault(page = 0, size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
-                                                       @RequestParam(value = "search", required = false) String keyword) {
+                                                       @RequestParam(value = "search", required = false) String keyword,
+                                                       @RequestParam(value = "category", required = false) Category category) {
         if (keyword != null) {
             return postService.searchPost(pageable, keyword);
         }
-        return postService.findAllPosts(pageable);
+        return postService.findAllPosts(pageable, category);
     }
 
     @PostMapping("/{id}")

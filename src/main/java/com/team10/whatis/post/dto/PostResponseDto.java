@@ -1,5 +1,6 @@
 package com.team10.whatis.post.dto;
 
+import com.team10.whatis.post.entity.Category;
 import com.team10.whatis.post.entity.Post;
 import lombok.Getter;
 
@@ -10,6 +11,7 @@ import java.util.List;
 @Getter
 public class PostResponseDto {
     private Long id;
+    private Category category;
     private String title;
     private String thumbnail;
     private int targetAmount;
@@ -23,6 +25,7 @@ public class PostResponseDto {
 
     public PostResponseDto(Post post) {
         this.id = post.getId();
+        this.category = post.getCategory();
         this.title = post.getTitle();
         this.thumbnail = post.getThumbnail();
         this.targetAmount = post.getTargetAmount();
