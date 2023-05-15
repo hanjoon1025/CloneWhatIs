@@ -3,6 +3,9 @@ package com.team10.whatis.post.service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.team10.whatis.global.dto.ResponseDto;
+import com.team10.whatis.global.security.UserDetailsImpl;
+import com.team10.whatis.likes.entity.Likes;
+import com.team10.whatis.likes.repository.LikesRepository;
 import com.team10.whatis.member.entity.Member;
 import com.team10.whatis.post.dto.PostInfoRequestDto;
 import com.team10.whatis.post.dto.PostRequestDto;
@@ -21,11 +24,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -43,7 +48,7 @@ public class PostService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
     private final AmazonS3 amazonS3;
-
+    private final LikesRepository likesRepository;
     /**
      * 프로젝트 생성
      */
@@ -152,18 +157,18 @@ public class PostService {
     /**
      * 제목과 태그에 keyword가 포함되는 프로젝트 검색
      */
-    public ResponseDto<List<PostResponseDto>> searchPost(Pageable pageable, String keyword) {
+    public ResponseDto<List<PostResponseDto>> searchPost(Pageable pageable, String keyword, Authentication authentication) {
         Page<Post> allPosts = postRepository.findByTitleContainingOrTagsTagNameContaining(pageable, keyword, keyword);
-        List<PostResponseDto> postList = allPosts.getContent().stream().map(PostResponseDto::new).collect(Collectors.toList());
 
-        //TODO 프로젝트마다 좋아요 여부 확인
+
+        List<PostResponseDto> postList = getAllPostsByUserDetails(authentication, allPosts);
         return ResponseDto.setSuccess(postList);
     }
 
     /**
      * 프로젝트 전체 조회
      */
-    public ResponseDto<List<PostResponseDto>> findAllPosts(Pageable pageable, Category category) {
+    public ResponseDto<List<PostResponseDto>> findAllPosts(Pageable pageable, Category category, Authentication authentication) {
         Page<Post> allPosts = null;
 
         if (category == null) {
@@ -171,18 +176,17 @@ public class PostService {
         } else {
             allPosts = postRepository.findAllByCategory(pageable, category);
         }
-        List<PostResponseDto> postList = allPosts.getContent().stream().map(PostResponseDto::new).collect(Collectors.toList());
-
-        //TODO 프로젝트마다 좋아요 여부 확인
+        List<PostResponseDto> postList = getAllPostsByUserDetails(authentication, allPosts);
         return ResponseDto.setSuccess(postList);
     }
 
     /**
      * 프로젝트 상세 조회
      */
-    public ResponseDto<PostResponseDto> findPost(Long id) {
+    public ResponseDto<PostResponseDto> findPost(Long id, Authentication authentication) {
         Post post = postValidator.validateIsExistPost(id);
-        return ResponseDto.setSuccess(new PostResponseDto(post));
+        PostResponseDto postResponseDto = getPostByUserDetails(authentication, post);
+        return ResponseDto.setSuccess(postResponseDto);
     }
 
     /**
@@ -195,5 +199,29 @@ public class PostService {
         FundPost fundPost = new FundPost(post, member);
         fundPostRepository.save(fundPost);
         return ResponseDto.setSuccess(null);
+    }
+
+    private List<PostResponseDto> getAllPostsByUserDetails(Authentication authentication, Page<Post> allPosts){
+        List<PostResponseDto> postList = new ArrayList<>();
+        for(Post post : allPosts){
+            PostResponseDto postResponseDto = getPostByUserDetails(authentication, post);
+            postList.add(postResponseDto);
+        }
+        return postList;
+    }
+
+    private PostResponseDto getPostByUserDetails(Authentication authentication, Post post){
+        PostResponseDto postResponseDto = new PostResponseDto(post, false);
+        boolean userLoggedIn = authentication != null;
+        if(userLoggedIn){
+            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+            for(Likes likes : likesRepository.findAllByPost(post)){
+                if(userDetails.getMember().getEmail().equals(likes.getMember().getEmail())){
+                    postResponseDto.setLikeStatus(true);
+                    break;
+                }
+            }
+        }
+        return postResponseDto;
     }
 }

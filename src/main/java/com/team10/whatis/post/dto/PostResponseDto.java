@@ -20,10 +20,11 @@ public class PostResponseDto {
     private int percentage;
     private String name;
     private List<String> tags = new ArrayList<>();
+    private int likeCount;
+    private boolean likeStatus;
+   
 
-    //TODO likeStatus 추가 필요(추가시 주석 제거)
-
-    public PostResponseDto(Post post) {
+    public PostResponseDto(Post post, boolean likeStatus) {
         this.id = post.getId();
         this.category = post.getCategory();
         this.title = post.getTitle();
@@ -34,9 +35,15 @@ public class PostResponseDto {
         this.percentage = calcPercentage(post.getTotalAmount(), post.getTargetAmount());
         this.name = post.getMember().getUsername();
         post.getTags().forEach(tag -> this.tags.add(tag.getTag().getName()));
+        this.likeCount = post.getLikeCount();
+        this.likeStatus = likeStatus;
     }
 
     private int calcPercentage(int totalAmount, int targetAmount) {
         return (int) Math.round(((double) totalAmount / targetAmount * 100));
+    }
+
+    public void setLikeStatus(boolean likeStatus) {
+        this.likeStatus = likeStatus;
     }
 }

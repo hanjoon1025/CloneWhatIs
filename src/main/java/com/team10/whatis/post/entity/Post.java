@@ -68,6 +68,11 @@ public class Post extends TimeStamped {
     @OneToMany(mappedBy = "post", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<PostTag> tags = new ArrayList<>();
 
+    //좋아요 개수
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    private int likeCount;
+
     public Post(PostRequestDto postRequestDto, Member member) {
         this.category = postRequestDto.getCategory();
         this.member = member;
@@ -94,5 +99,9 @@ public class Post extends TimeStamped {
 
     public void updateTotalAmount() {
         this.totalAmount += price;
+    }
+
+    public void updateLike (Boolean likeOrDislike){
+        this.likeCount = Boolean.TRUE.equals(likeOrDislike) ? this.likeCount + 1 : this.likeCount - 1;
     }
 }
