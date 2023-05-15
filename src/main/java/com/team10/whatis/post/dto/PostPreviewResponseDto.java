@@ -9,6 +9,7 @@ public class PostPreviewResponseDto {
     private Long id;
     private Category category;
     private String title;
+    private String thumbnail;
     private int totalAmount;
     private LocalDate deadLine;
     private int percentage;
@@ -21,6 +22,7 @@ public class PostPreviewResponseDto {
         this.id = post.getId();
         this.category = post.getCategory();
         this.title = post.getTitle();
+        this.thumbnail = post.getThumbnail();
         this.totalAmount = post.getTotalAmount();
         this.deadLine = post.getDeadLine();
         this.percentage = calcPercentage(post.getTotalAmount(), post.getTargetAmount());
