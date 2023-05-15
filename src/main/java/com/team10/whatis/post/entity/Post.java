@@ -87,8 +87,7 @@ public class Post extends TimeStamped {
     }
 
     public void saveTags(Tag tag) {
-        PostTag postTag = new PostTag();
-        postTag.setTag(tag);
+        PostTag postTag = new PostTag(tag);
         postTag.setPost(this);
         tags.add(postTag);
     }

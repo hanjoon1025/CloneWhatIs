@@ -170,6 +170,14 @@ public class PostService {
     }
 
     /**
+     * 프로젝트 상세 조회
+     */
+    public ResponseDto<PostResponseDto> findPost(Long id) {
+        Post post = postValidator.validateIsExistPost(id);
+        return ResponseDto.setSuccess(new PostResponseDto(post));
+    }
+
+    /**
      * 프로젝트 펀딩
      */
     public ResponseDto<?> fundingPost(Long id, Member member) {
@@ -177,7 +185,6 @@ public class PostService {
         postValidator.validateIsFundingPost(post, member);
 
         FundPost fundPost = new FundPost(post, member);
-        post.updateTotalAmount();
         fundPostRepository.save(fundPost);
         return ResponseDto.setSuccess(null);
     }

@@ -29,5 +29,6 @@ public class FundPost {
     public FundPost(Post post, Member member) {
         this.post = post;
         this.member = member;
+        post.updateTotalAmount();
     }
 }
