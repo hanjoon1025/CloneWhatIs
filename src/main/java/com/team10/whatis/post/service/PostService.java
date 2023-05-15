@@ -4,9 +4,9 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.team10.whatis.global.dto.ResponseDto;
 import com.team10.whatis.member.entity.Member;
-import com.team10.whatis.member.repository.MemberRepository;
 import com.team10.whatis.post.dto.PostInfoRequestDto;
 import com.team10.whatis.post.dto.PostRequestDto;
+import com.team10.whatis.post.dto.PostResponseDto;
 import com.team10.whatis.post.dto.PostStoryRequestDto;
 import com.team10.whatis.post.entity.Post;
 import com.team10.whatis.post.entity.Tag;
@@ -16,6 +16,8 @@ import com.team10.whatis.post.validator.PostValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -140,5 +142,27 @@ public class PostService {
             throw new IllegalArgumentException("이미지 업로드에 실패했습니다.");
         }
         return amazonS3.getUrl(bucket, fileName).toString();
+    }
+
+    /**
+     * 제목과 태그에 keyword가 포함되는 프로젝트 검색
+     */
+    public ResponseDto<List<PostResponseDto>> searchPost(Pageable pageable, String keyword) {
+        Page<Post> allPosts = postRepository.findByTitleContainingOrTagsTagNameContaining(pageable, keyword, keyword);
+        List<PostResponseDto> postList = allPosts.getContent().stream().map(PostResponseDto::new).collect(Collectors.toList());
+
+        //TODO 프로젝트마다 좋아요 여부 확인
+        return ResponseDto.setSuccess(postList);
+    }
+
+    /**
+     * 프로젝트 전체 조회
+     */
+    public ResponseDto<List<PostResponseDto>> findAllPosts(Pageable pageable) {
+        Page<Post> allPosts = postRepository.findAll(pageable);
+        List<PostResponseDto> postList = allPosts.getContent().stream().map(PostResponseDto::new).collect(Collectors.toList());
+
+        //TODO 프로젝트마다 좋아요 여부 확인
+        return ResponseDto.setSuccess(postList);
     }
 }

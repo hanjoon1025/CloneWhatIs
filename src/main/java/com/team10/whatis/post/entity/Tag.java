@@ -17,9 +17,9 @@ public class Tag {
     private Long id;
 
     @Column(nullable = false)
-    private String tagName;
+    private String name;
 
-    public Tag(String tagName) {
-        this.tagName = tagName;
+    public Tag(String name) {
+        this.name = name;
     }
 }

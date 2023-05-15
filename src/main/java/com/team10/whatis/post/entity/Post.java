@@ -47,6 +47,9 @@ public class Post extends TimeStamped {
     //펀딩 금액
     private int price;
 
+    //모인 금액
+    private int totalAmount;
+
     //프로젝트 이미지
     @ColumnDefault(value = "'https://song-github-actions-s3-bucket.s3.ap-northeast-2.amazonaws.com/defaultImage.jpg'")
     private String projectImage;
@@ -68,6 +71,7 @@ public class Post extends TimeStamped {
     public Post(PostRequestDto postRequestDto, Member member) {
         this.category = postRequestDto.getCategory();
         this.member = member;
+        this.totalAmount = 0;
     }
 
     public void updatePostInfo(PostInfoRequestDto postInfoRequestDto) {

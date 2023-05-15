@@ -32,7 +32,7 @@ public class PostValidator {
 
     //태그 존재 여부 확인
     public Tag validateIsExistTag(String tag) {
-        Optional<Tag> findTag = tagRepository.findByTagName(tag);
+        Optional<Tag> findTag = tagRepository.findByName(tag);
         return findTag.orElse(null);
     }
 
