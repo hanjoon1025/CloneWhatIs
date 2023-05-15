@@ -26,6 +26,12 @@ public class MemberController {
 
     }
 
+    @PostMapping("/login")
+    public ResponseDto<?> login(@RequestBody MemberRequestDto.login requestDto, HttpServletResponse response) {
+        return memberService.login(requestDto,response);
+    }
+
+
     @GetMapping("/kakao/callback")
     public String kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
         // code: 카카오 서버로부터 받은 인가 코드
