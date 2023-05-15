@@ -1,5 +1,6 @@
 package com.team10.whatis.post.entity;
 
+import com.team10.whatis.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -10,21 +11,24 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PostTag {
+public class FundPost {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "postTag_id")
+    @Column(name = "fundPost_id")
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tag_id")
-    private Tag tag;
-
-    public PostTag(Tag tag) {
-        this.tag = tag;
+    public FundPost(Post post, Member member) {
+        this.post = post;
+        this.member = member;
+        post.updateTotalAmount();
     }
 }

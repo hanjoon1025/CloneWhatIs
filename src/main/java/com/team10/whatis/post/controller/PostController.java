@@ -60,4 +60,14 @@ public class PostController {
         }
         return postService.findAllPosts(pageable);
     }
+
+    @PostMapping("/{id}")
+    public ResponseDto<?> fundingPost(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return postService.fundingPost(id, userDetails.getMember());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseDto<PostResponseDto> findPost(@PathVariable Long id) {
+        return postService.findPost(id);
+    }
 }
