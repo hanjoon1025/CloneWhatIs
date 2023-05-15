@@ -54,7 +54,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/members/login").permitAll()
                 .requestMatchers("/members/signup").permitAll()
                 .requestMatchers("/emails/**").permitAll()
-                .requestMatchers(HttpMethod.GET,"/post/**").permitAll()
+                .requestMatchers(HttpMethod.GET,"/posts/**").permitAll()
 
                 .anyRequest().authenticated()
                 // JWT 인증/인가를 사용하기 위한 설정
