@@ -2,6 +2,7 @@ package com.team10.whatis.member.entity;
 
 
 import com.team10.whatis.member.dto.MemberRequestDto;
+//import com.team10.whatis.member.service.Me;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,8 @@ public class Member {
     @Column(nullable = false, unique = true)
     private String username;
 
+    private Long kakaoId;
+
     @Column(nullable = false)
     private String password;
 
@@ -29,8 +32,20 @@ public class Member {
         this.password = password;
         this.email = email;
     }
+    //카카오 생성자
+    public Member(String username, Long kakaoId, String password, String email) {
+        this.username = username;
+        this.kakaoId = kakaoId;
+        this.password = password;
+        this.email = email;
+    }
 
     public static Member saveMember(MemberRequestDto requestDto, String password){
         return new Member(requestDto.getUsername(), password, requestDto.getEmail());
+    }
+
+    public Member kakaoIdUpdate(Long kakaoId) {
+        this.kakaoId = kakaoId;
+        return this;
     }
 }
