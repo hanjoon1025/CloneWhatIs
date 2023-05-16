@@ -50,6 +50,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 }
                 //Access & Refresh 토큰 만료시
                 else {
+                    log.info("토큰 에러 here");
                     jwtExceptionHandler(response, "유효하지 않은 토큰 입니다.", StatusCode.BAD_REQUEST);
                     return;
                 }
@@ -66,6 +67,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     }
 
     public void jwtExceptionHandler(HttpServletResponse response, String message, StatusCode statusCode) {
+        log.info("토큰 에러");
         response.setStatus(statusCode.getStatusCode());
         response.setContentType("application/json; charset=utf8");
         try {
