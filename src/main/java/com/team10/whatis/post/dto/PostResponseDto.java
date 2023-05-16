@@ -20,6 +20,8 @@ public class PostResponseDto {
     private LocalDate deadLine;
     private int percentage;
     private String name;
+    private String summary;
+    private String storyBoard;
     private List<String> tags = new ArrayList<>();
     private int likeCount;
     private boolean likeStatus;
@@ -36,6 +38,8 @@ public class PostResponseDto {
         this.percentage = calcPercentage(post.getTotalAmount(), post.getTargetAmount());
         this.price = post.getPrice();
         this.name = post.getMember().getUsername();
+        this.summary = post.getSummary();
+        this.storyBoard = post.getStoryBoard();
         post.getTags().forEach(tag -> this.tags.add(tag.getTag().getName()));
         this.likeCount = post.getLikeCount();
         this.likeStatus = likeStatus;
