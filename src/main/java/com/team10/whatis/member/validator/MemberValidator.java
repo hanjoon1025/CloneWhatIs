@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -38,7 +37,7 @@ public class MemberValidator {
 
 
     //회원 존재 여부
-    public void validateIsExistMember(String email){
+    public void validateIsExistMember(String email) {
         Optional<Member> found = memberRepository.findByEmail(email);
         if (found.isPresent()) {
             throw new CustomException("이미 등록된 회원입니다.");
@@ -68,7 +67,6 @@ public class MemberValidator {
         }
         return found.get();
     }
-
 
 
 }

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Member {
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Long id;
 
@@ -39,7 +39,7 @@ public class Member {
         this.email = email;
     }
 
-    public static Member saveMember(MemberRequestDto requestDto, String password){
+    public static Member saveMember(MemberRequestDto requestDto, String password) {
         return new Member(requestDto.getUsername(), password, requestDto.getEmail());
     }
 

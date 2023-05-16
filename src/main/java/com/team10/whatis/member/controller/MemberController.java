@@ -11,30 +11,23 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/members")
 public class MemberController {
-
-
-
     private final MemberService memberService;
     private final KakaoService kakaoService;
 
     @PostMapping("/signup")
     public ResponseDto<?> signup(@Valid @RequestBody MemberRequestDto requestDto) {
         return memberService.signup(requestDto);
-
     }
 
     @PostMapping("/login")
     public ResponseDto<?> login(@RequestBody MemberRequestDto.login requestDto, HttpServletResponse response) {
-        return memberService.login(requestDto,response);
+        return memberService.login(requestDto, response);
     }
 
 //    @PostMapping("/logout")

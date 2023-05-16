@@ -35,7 +35,7 @@ public class JwtUtil {
     public static final String REFRESH_TOKEN = "Refresh_Token";
 
     private static final long ACCESS_TOKEN_TIME = 60 * 60 * 1000L;   //AccessToken Time 1 hr
-    private static final long REFRESH_TOKEN_TIME = 24 * 60 * 60 *100L; //RefreshToken Time 1 day
+    private static final long REFRESH_TOKEN_TIME = 24 * 60 * 60 * 100L; //RefreshToken Time 1 day
     private final UserDetailsServiceImpl userDetailsService;
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
@@ -53,14 +53,13 @@ public class JwtUtil {
 
     // header 토큰을 가져오기
     public String resolveToken(HttpServletRequest request, String type) {
-        if(type.equals(ACCESS_TOKEN)){
+        if (type.equals(ACCESS_TOKEN)) {
             String bearerToken = request.getHeader(ACCESS_TOKEN);
             if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
                 return bearerToken.substring(7);
             }
             return null;
-        }
-        else {
+        } else {
             String bearerToken = request.getHeader(REFRESH_TOKEN);
             if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
                 return bearerToken.substring(7);
@@ -69,12 +68,12 @@ public class JwtUtil {
         }
     }
 
-    public TokenDto createAllToken(String userEmail){
-        return new TokenDto(createToken(userEmail,ACCESS_TOKEN), createToken(userEmail,REFRESH_TOKEN));
+    public TokenDto createAllToken(String userEmail) {
+        return new TokenDto(createToken(userEmail, ACCESS_TOKEN), createToken(userEmail, REFRESH_TOKEN));
     }
 
     // 토큰 생성
-    public String createToken(String userEmail,  String token) {
+    public String createToken(String userEmail, String token) {
         Date date = new Date();
         long time = token.equals(ACCESS_TOKEN) ? ACCESS_TOKEN_TIME : REFRESH_TOKEN_TIME;
 
@@ -108,7 +107,7 @@ public class JwtUtil {
     //DB에 저장돼 있는 토큰과 비교
     public Boolean validateRefreshToken(String token) {
         //1차 토큰 검증
-        if(!validateToken(token)) return false;
+        if (!validateToken(token)) return false;
 
         //사용자 찾기
         Member member = memberRepository.findByEmail(getUserInfoFromToken(token)).orElseThrow(

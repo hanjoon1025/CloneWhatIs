@@ -1,7 +1,6 @@
 package com.team10.whatis.member.service;
 
 import com.team10.whatis.global.dto.ResponseDto;
-import com.team10.whatis.global.exception.CustomException;
 import com.team10.whatis.global.jwt.JwtUtil;
 import com.team10.whatis.global.jwt.dto.TokenDto;
 import com.team10.whatis.global.jwt.entity.RefreshToken;
@@ -44,14 +43,12 @@ public class MemberService {
         memberRepository.saveAndFlush(Member.saveMember(requestDto, password));
 
         return ResponseDto.setSuccess(null);
-
-
     }
 
     public ResponseDto<?> login(MemberRequestDto.login requestDto, HttpServletResponse response) {
         // 이메일, 비밀번호 확인
         Member member = memberValidator.validateEmailAndPassword(requestDto);
-        
+
 
         //Token 생성
         TokenDto tokenDto = jwtUtil.createAllToken(member.getEmail());
@@ -61,7 +58,7 @@ public class MemberService {
 
         //있으면 새 토큰 발급 후 업데이트
         //없으면 새로 만들고 DB에 저장
-        if(refreshToken.isPresent()) {
+        if (refreshToken.isPresent()) {
             refreshTokenRepository.save(refreshToken.get().updateToken(tokenDto.getRefreshToken()));
         } else {
             refreshTokenRepository.saveAndFlush(RefreshToken.saveToken(tokenDto.getRefreshToken(), member));

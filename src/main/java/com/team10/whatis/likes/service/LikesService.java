@@ -28,22 +28,20 @@ public class LikesService {
 
         //좋아요 존재여부 확인
         Likes like = likesRepository.findByMemberAndPost(member, post);
-        if(like == null){
+        if (like == null) {
             Likes newLikes = likesRepository.save(Likes.addLike(member, post));
             newLikes.setLikeStatus();
             post.updateLike(true);
-            return ResponseDto.setSuccess(new LikesResponseDto(post,newLikes));
-        }
-        else {
-            if(!like.isLikeStatus()){
+            return ResponseDto.setSuccess(new LikesResponseDto(post, newLikes));
+        } else {
+            if (!like.isLikeStatus()) {
                 like.setLikeStatus();
                 post.updateLike(true);
-            }
-            else{
+            } else {
                 like.setLikeStatus();
                 post.updateLike(false);
             }
-            return ResponseDto.setSuccess(new LikesResponseDto(post,like));
+            return ResponseDto.setSuccess(new LikesResponseDto(post, like));
         }
     }
 }

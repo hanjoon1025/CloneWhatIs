@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Likes {
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "likes_id")
     private Long id;
 
@@ -32,11 +32,11 @@ public class Likes {
         this.post = post;
     }
 
-    public static Likes addLike(Member member, Post post){
-        return new Likes(member,post);
+    public static Likes addLike(Member member, Post post) {
+        return new Likes(member, post);
     }
 
-    public void setLikeStatus(){
+    public void setLikeStatus() {
         this.likeStatus = !(this.likeStatus);
     }
 }

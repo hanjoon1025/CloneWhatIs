@@ -2,8 +2,6 @@ package com.team10.whatis.post.validator;
 
 import com.team10.whatis.global.exception.CustomException;
 import com.team10.whatis.member.entity.Member;
-import com.team10.whatis.post.dto.PostStoryRequestDto;
-import com.team10.whatis.post.entity.Category;
 import com.team10.whatis.post.entity.Post;
 import com.team10.whatis.post.entity.Tag;
 import com.team10.whatis.post.repository.FundPostRepository;
@@ -12,8 +10,6 @@ import com.team10.whatis.post.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Component
@@ -43,7 +39,7 @@ public class PostValidator {
     }
 
     public void validatePostAuthor(Post post, Member member) {
-        if (!post.getMember().getEmail().equals(member.getEmail())){
+        if (!post.getMember().getEmail().equals(member.getEmail())) {
             throw new CustomException("권한이 없습니다.");
         }
     }

@@ -38,7 +38,7 @@ public class PostController {
     @PutMapping(value = "/{id}/info", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseDto<?> updatePostIndo(@PathVariable Long id,
                                          @Valid @RequestPart(value = "postInfo") PostInfoRequestDto postInfoRequestDto,
-                                         @RequestPart(value="thumbnail", required = false) MultipartFile multipartFile,
+                                         @RequestPart(value = "thumbnail", required = false) MultipartFile multipartFile,
                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.updatePostInfo(id, postInfoRequestDto, multipartFile, userDetails.getMember());
     }
@@ -46,13 +46,13 @@ public class PostController {
     @PutMapping("/{id}/story")
     public ResponseDto<?> updatePostStory(@PathVariable Long id,
                                           @Valid @RequestPart(value = "postStory") PostStoryRequestDto postStoryRequestDto,
-                                          @RequestPart(value="projectImage", required = false) MultipartFile image,
+                                          @RequestPart(value = "projectImage", required = false) MultipartFile image,
                                           @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.updatePostStory(id, postStoryRequestDto, image, userDetails.getMember());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseDto<?> deletePost(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseDto<?> deletePost(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.deletePost(id, userDetails.getMember());
     }
 
@@ -60,12 +60,12 @@ public class PostController {
     public ResponseDto<List<PostResponseDto>> postList(@PageableDefault(page = 0, size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
                                                        @RequestParam(value = "search", required = false) String keyword,
                                                        @RequestParam(value = "category", required = false) Category category) {
-        if(isAuthenticated()){
+        if (isAuthenticated()) {
             UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if (keyword != null) {
                 return postService.searchPost(pageable, keyword, userDetails.getMember());
             }
-            return postService.findAllPosts(pageable, category,userDetails.getMember());
+            return postService.findAllPosts(pageable, category, userDetails.getMember());
         }
         if (keyword != null) {
             return postService.searchPost(pageable, keyword, null);
@@ -81,11 +81,11 @@ public class PostController {
 
     @GetMapping("/{id}")
     public ResponseDto<PostResponseDto> findPost(@PathVariable Long id) {
-        if(isAuthenticated()){
+        if (isAuthenticated()) {
             UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             return postService.findPost(id, userDetails.getMember());
         }
-        return postService.findPost(id,null);
+        return postService.findPost(id, null);
     }
 
     //로그인 여부 확인
