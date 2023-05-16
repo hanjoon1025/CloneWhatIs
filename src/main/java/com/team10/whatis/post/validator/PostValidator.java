@@ -10,6 +10,9 @@ import com.team10.whatis.post.repository.FundPostRepository;
 import com.team10.whatis.post.repository.PostRepository;
 import com.team10.whatis.post.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;

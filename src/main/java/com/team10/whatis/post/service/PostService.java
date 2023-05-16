@@ -3,7 +3,6 @@ package com.team10.whatis.post.service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.team10.whatis.global.dto.ResponseDto;
-import com.team10.whatis.global.exception.CustomException;
 import com.team10.whatis.global.security.UserDetailsImpl;
 import com.team10.whatis.likes.entity.Likes;
 import com.team10.whatis.likes.repository.LikesRepository;
@@ -25,8 +24,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -57,10 +54,6 @@ public class PostService {
      * 프로젝트 생성
      */
     public ResponseDto<Long> createPost(PostRequestDto postRequestDto, Member member) {
-        if (member == null) {
-            throw new CustomException("로그인한 회원이 아닙니다.");
-        }
-
         Post post = new Post(postRequestDto, member);
         postRepository.save(post);
         return ResponseDto.setSuccess(post.getId());
@@ -75,16 +68,9 @@ public class PostService {
 
         //썸네일 변경
         if (multipartFile != null) {
-            postValidator.validateImageSize(multipartFile.getSize());
             String thumbnailUrl = uploadImage(multipartFile);
             post.setThumbnail(thumbnailUrl);
         }
-
-        // 프로젝트 정보 변경 전 검증
-        postValidator.validateProjectTitleLength(postInfoRequestDto.getTitle());
-        postValidator.validateFundingAmount(postInfoRequestDto.getPrice());
-        postValidator.validateTargetAmount(postInfoRequestDto.getTargetAmount());
-        postValidator.validateDeadline(postInfoRequestDto.getDeadLine());
 
         //프로젝트 정보 변경
         post.updatePostInfo(postInfoRequestDto);
@@ -124,13 +110,11 @@ public class PostService {
 
         //프로젝트 이미지 변경
         if (multipartFile != null) {
-            postValidator.validateImageSize(multipartFile.getSize());
             String projectImageUrl = uploadImage(multipartFile);
             post.setProjectImage(projectImageUrl);
         }
 
         //프로젝트 스토리 변경
-        postValidator.validatePostStory(postStoryRequestDto);
         post.updatePostStory(postStoryRequestDto);
         return ResponseDto.setSuccess(null);
     }
@@ -166,7 +150,7 @@ public class PostService {
             //s3에 파일 업로드
             amazonS3.putObject(bucket, fileName, image.getInputStream(), objMeta);
         } catch (IOException e) {
-            throw new CustomException("이미지 업로드에 실패했습니다.");
+            throw new IllegalArgumentException("이미지 업로드에 실패했습니다.");
         }
         return amazonS3.getUrl(bucket, fileName).toString();
     }
@@ -186,7 +170,6 @@ public class PostService {
      * 프로젝트 전체 조회
      */
     public ResponseDto<List<PostResponseDto>> findAllPosts(Pageable pageable, Category category, Authentication authentication) {
-        postValidator.validateCategory(category);
         Page<Post> allPosts = null;
 
         if (category == null) {
@@ -201,14 +184,10 @@ public class PostService {
     /**
      * 프로젝트 상세 조회
      */
-    public ResponseEntity<PostResponseDto> findPost(Long id, Authentication authentication) {
-        try {
-            Post post = postValidator.validateIsExistPost(id);
-            PostResponseDto postResponseDto = getPostByUserDetails(authentication, post);
-            return new ResponseEntity<>(postResponseDto, HttpStatus.OK);
-        } catch (CustomException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public ResponseDto<PostResponseDto> findPost(Long id, Authentication authentication) {
+        Post post = postValidator.validateIsExistPost(id);
+        PostResponseDto postResponseDto = getPostByUserDetails(authentication, post);
+        return ResponseDto.setSuccess(postResponseDto);
     }
 
     /**
