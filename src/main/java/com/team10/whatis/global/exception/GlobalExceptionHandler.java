@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({CustomException.class, MethodArgumentNotValidException.class})
-    public ResponseEntity<ResponseDto> handleCustomException(CustomException e) {
+    @ExceptionHandler({CustomException.class,MethodArgumentNotValidException.class})
+    public ResponseEntity<ResponseDto> handleCustomException(Exception e) {
         ResponseDto<Object> objectResponseDto = ResponseDto.setBadRequest(e.getMessage());
         return new ResponseEntity<>(objectResponseDto, HttpStatus.BAD_REQUEST);
     }
