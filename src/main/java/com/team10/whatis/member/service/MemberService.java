@@ -1,6 +1,7 @@
 package com.team10.whatis.member.service;
 
 import com.team10.whatis.global.dto.ResponseDto;
+import com.team10.whatis.global.exception.CustomException;
 import com.team10.whatis.global.jwt.JwtUtil;
 import com.team10.whatis.global.jwt.dto.TokenDto;
 import com.team10.whatis.global.jwt.entity.RefreshToken;
@@ -34,19 +35,24 @@ public class MemberService {
     private final MemberValidator memberValidator;
 
     public ResponseDto<?> signup(MemberRequestDto requestDto) {
-        //비밀번호 검증 홧인
-        memberValidator.validatePasswordCheck(requestDto);
+        try {
+            //비밀번호 검증 확인
+            memberValidator.validatePasswordCheck(requestDto);
 
-        // 비밀번호 암호화
-        String password = passwordEncoder.encode(requestDto.getPassword());
+            // 비밀번호 암호화
+            String password = passwordEncoder.encode(requestDto.getPassword());
 
-        // 회원 중복 확인
-        memberValidator.validateIsExistMember(requestDto.getEmail());
+            // 회원 중복 확인
+            memberValidator.validateIsExistMember(requestDto.getEmail());
 
-        // 사용자 DB에 저장
-        memberRepository.saveAndFlush(Member.saveMember(requestDto, password));
+            // 사용자 DB에 저장
+            memberRepository.saveAndFlush(Member.saveMember(requestDto, password));
 
-        return ResponseDto.setSuccess(null);
+            return ResponseDto.setSuccess(null);
+
+        } catch (CustomException e) {
+            throw e;
+        }
     }
 
     public ResponseDto<?> login(MemberRequestDto.login requestDto, HttpServletResponse response) {

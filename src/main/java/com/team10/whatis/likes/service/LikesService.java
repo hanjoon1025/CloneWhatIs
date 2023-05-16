@@ -23,6 +23,9 @@ public class LikesService {
         //프로젝트 확인
         Post post = likesValidator.validateIsExistPost(id);
 
+        // 로그인 여부 확인
+        likesValidator.validateIsLogin(member);
+
         //좋아요 존재여부 확인
         Likes like = likesRepository.findByMemberAndPost(member, post);
         if(like == null){

@@ -6,6 +6,7 @@ import com.team10.whatis.email.entity.Email;
 import com.team10.whatis.email.repository.EmailRepository;
 import com.team10.whatis.email.validator.EmailValidator;
 import com.team10.whatis.global.dto.ResponseDto;
+import com.team10.whatis.global.exception.CustomException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
@@ -87,8 +88,8 @@ public class EmailService {
         }
         try{
             javaMailSender.send(message); // 메일 발송
-        }catch(MailException es){
-            ResponseDto.setBadRequest("메일 전송 실패",null);
+        } catch (MailException es) {
+            throw new CustomException("메일 전송 실패");
         }
         Email.updateCode(email,code);
         emailRepository.save(email);

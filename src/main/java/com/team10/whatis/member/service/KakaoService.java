@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team10.whatis.global.dto.ResponseDto;
+import com.team10.whatis.global.exception.CustomException;
 import com.team10.whatis.global.jwt.JwtUtil;
 import com.team10.whatis.global.jwt.dto.TokenDto;
 import com.team10.whatis.global.jwt.entity.RefreshToken;
@@ -15,10 +16,7 @@ import com.team10.whatis.member.repository.MemberRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -96,6 +94,10 @@ public class KakaoService {
                 String.class
         );
 
+        if (response.getStatusCode() != HttpStatus.OK) {
+            throw new CustomException("로그인에 실패했습니다.");
+        }
+
         // HTTP 응답 (JSON) -> 액세스 토큰 파싱
         String responseBody = response.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -119,6 +121,10 @@ public class KakaoService {
                 kakaoUserInfoRequest,
                 String.class
         );
+
+        if (response.getStatusCode() != HttpStatus.OK) {
+            throw new CustomException("로그인에 실패했습니다.");
+        }
 
         String responseBody = response.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
