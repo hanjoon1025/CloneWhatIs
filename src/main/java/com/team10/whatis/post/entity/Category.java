@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum Category {
+    All("All"),
     FashionStuff("FashionStuff"),
     HomeLiving("HomeLiving"),
     TechEletrics("TechEletrics"),
