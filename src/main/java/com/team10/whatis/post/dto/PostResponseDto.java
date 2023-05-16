@@ -16,6 +16,7 @@ public class PostResponseDto {
     private String thumbnail;
     private int targetAmount;
     private int totalAmount;
+    private int price;
     private LocalDate deadLine;
     private int percentage;
     private String name;
@@ -33,6 +34,7 @@ public class PostResponseDto {
         this.totalAmount = post.getTotalAmount();
         this.deadLine = post.getDeadLine();
         this.percentage = calcPercentage(post.getTotalAmount(), post.getTargetAmount());
+        this.price = post.getPrice();
         this.name = post.getMember().getUsername();
         post.getTags().forEach(tag -> this.tags.add(tag.getTag().getName()));
         this.likeCount = post.getLikeCount();
