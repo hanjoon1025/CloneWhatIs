@@ -24,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -212,8 +213,10 @@ public class PostService {
 
     private PostResponseDto getPostByUserDetails(Authentication authentication, Post post){
         PostResponseDto postResponseDto = new PostResponseDto(post, false);
-        boolean userLoggedIn = authentication != null;
-        if(userLoggedIn){
+
+
+        if(!(authentication instanceof AnonymousAuthenticationToken)){
+            System.out.println("Logged in");
             UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
             for(Likes likes : likesRepository.findAllByPost(post)){
                 if(userDetails.getMember().getEmail().equals(likes.getMember().getEmail())){

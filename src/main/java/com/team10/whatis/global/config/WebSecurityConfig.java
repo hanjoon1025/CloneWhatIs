@@ -58,6 +58,12 @@ public class WebSecurityConfig {
         // 이 설정을 해주지 않으면 밑의 cors가 적용되지 않는다
         http.cors();
 
+        //로그아웃 기능
+        http.logout()
+                .logoutUrl("/members/logout")
+                .logoutSuccessUrl("/posts")
+                .deleteCookies(JwtUtil.ACCESS_TOKEN, JwtUtil.REFRESH_TOKEN);
+
         // 401 Error 처리, Authorization 즉, 인증과정에서 실패할 시 처리
         //http.exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
 
