@@ -51,6 +51,7 @@ public class MemberService {
     public ResponseDto<?> login(MemberRequestDto.login requestDto, HttpServletResponse response) {
         // 이메일, 비밀번호 확인
         Member member = memberValidator.validateEmailAndPassword(requestDto);
+        
 
         //Token 생성
         TokenDto tokenDto = jwtUtil.createAllToken(member.getEmail());
