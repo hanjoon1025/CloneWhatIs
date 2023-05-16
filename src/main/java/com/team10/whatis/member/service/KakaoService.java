@@ -37,6 +37,8 @@ public class KakaoService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final JwtUtil jwtUtil;
 
+
+
     public ResponseDto<?> kakaoLogin(String code, HttpServletResponse response) throws JsonProcessingException {
         // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getToken(code);
@@ -79,7 +81,7 @@ public class KakaoService {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
         body.add("client_id", "7fe3a140583f0df4191f29f81742062c");
-        body.add("client_Secret", "oQW0EqzBeOF7NPZa3mRxEr0x0OwSyKdL");
+//        body.add("client_Secret", "oQW0EqzBeOF7NPZa3mRxEr0x0OwSyKdL");
         body.add("redirect_uri", "http://43.201.181.250/members/kakao/callback");
         body.add("code", code);
 
