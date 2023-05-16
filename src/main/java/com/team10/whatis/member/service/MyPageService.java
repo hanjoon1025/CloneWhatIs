@@ -1,27 +1,17 @@
 package com.team10.whatis.member.service;
 
 import com.team10.whatis.global.dto.ResponseDto;
-import com.team10.whatis.global.security.UserDetailsImpl;
 import com.team10.whatis.likes.entity.Likes;
 import com.team10.whatis.likes.repository.LikesRepository;
-import com.team10.whatis.member.dto.MemberRequestDto;
 import com.team10.whatis.member.dto.MyPageResponseDto;
-import com.team10.whatis.member.entity.Member;
-import com.team10.whatis.member.repository.MemberRepository;
 import com.team10.whatis.post.dto.PostPreviewResponseDto;
-import com.team10.whatis.post.dto.PostRequestDto;
-import com.team10.whatis.post.dto.PostResponseDto;
 import com.team10.whatis.post.entity.Post;
-import com.team10.whatis.post.repository.FundPostRepository;
 import com.team10.whatis.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

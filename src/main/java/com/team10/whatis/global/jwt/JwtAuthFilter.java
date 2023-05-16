@@ -1,6 +1,10 @@
 package com.team10.whatis.global.jwt;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.team10.whatis.global.dto.ResponseDto;
+import com.team10.whatis.global.entity.StatusCode;
+import com.team10.whatis.global.exception.CustomException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -27,7 +32,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         if(accessToken != null) {
             //Access 토큰 유효 시, security context에 인증 정보 저장
             if(jwtUtil.validateToken(accessToken)){
-                setAuthentication(jwtUtil.getUserInfoFromToken(accessToken));
+                    setAuthentication(jwtUtil.getUserInfoFromToken(accessToken));
             }
             // Access 토큰 만료
             else if (refreshToken != null) {
@@ -45,7 +50,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 }
                 //Access & Refresh 토큰 만료시
                 else {
-                    throw new IllegalArgumentException("Token이 없네요");
+                    jwtExceptionHandler(response, "유효하지 않은 토큰 입니다.", StatusCode.BAD_REQUEST);
+                    return;
                 }
             }
         }
@@ -57,5 +63,16 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         Authentication authentication = jwtUtil.createAuthentication(userEmail);
         context.setAuthentication(authentication);
         SecurityContextHolder.setContext(context);
+    }
+
+    public void jwtExceptionHandler(HttpServletResponse response, String message, StatusCode statusCode) {
+        response.setStatus(statusCode.getStatusCode());
+        response.setContentType("application/json; charset=utf8");
+        try {
+            String json = new ObjectMapper().writeValueAsString(ResponseDto.setBadRequest(message));
+            response.getWriter().write(json);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
     }
 }

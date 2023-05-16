@@ -1,5 +1,8 @@
 package com.team10.whatis.global.entity;
 
+import lombok.Getter;
+
+@Getter
 public enum StatusCode {
     OK(200, "OK"),
     BAD_REQUEST(400, "BAD_REQUEST"),

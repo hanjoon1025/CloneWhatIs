@@ -4,7 +4,6 @@ package com.team10.whatis.member.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.team10.whatis.global.dto.ResponseDto;
 import com.team10.whatis.global.jwt.JwtUtil;
-import com.team10.whatis.global.security.UserDetailsImpl;
 import com.team10.whatis.member.dto.MemberRequestDto;
 import com.team10.whatis.member.service.KakaoService;
 import com.team10.whatis.member.service.MemberService;
