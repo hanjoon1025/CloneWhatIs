@@ -12,22 +12,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Email {
     @Id
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
     private String code;
 
     private Email(String email) {
         this.email = email;
     }
-    private void setCode(String code){
+
+    private void setCode(String code) {
         this.code = code;
     }
 
-    public static Email saveEmail(EmailRequestDto requestDto){
+    public static Email saveEmail(EmailRequestDto requestDto) {
         return new Email(requestDto.getEmail());
     }
 
-    public static void updateCode(Email email,String code){
+    public static void updateCode(Email email, String code) {
         email.setCode(code);
     }
 

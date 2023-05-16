@@ -24,15 +24,16 @@ public class EmailController {
     인증코드를 보내는 컨트롤러
      */
     @PostMapping("/auth")
-    public ResponseDto<?> mailSend(@RequestBody EmailRequestDto emailRequestDto){
+    public ResponseDto<?> mailSend(@RequestBody EmailRequestDto emailRequestDto) {
         return emailService.sendMessage(emailRequestDto);
     }
+
     /*
     가입시 작성한 메일에 날아온 인증코드를
     검증하는 컨트롤러
      */
     @PostMapping("/check")
-    public ResponseDto<?> codeCheck(@RequestBody CodeRequestDto codeRequestDto){
+    public ResponseDto<?> codeCheck(@RequestBody CodeRequestDto codeRequestDto) {
         return emailService.codeCheck(codeRequestDto);
     }
 }

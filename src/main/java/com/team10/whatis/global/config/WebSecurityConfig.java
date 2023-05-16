@@ -22,6 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
     private final JwtUtil jwtUtil;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -51,7 +52,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/members/login").permitAll()
                 .requestMatchers("/members/signup").permitAll()
                 .requestMatchers("/emails/**").permitAll()
-                .requestMatchers(HttpMethod.GET,"/posts/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/posts/**").permitAll()
 
                 .anyRequest().authenticated()
                 // JWT 인증/인가를 사용하기 위한 설정

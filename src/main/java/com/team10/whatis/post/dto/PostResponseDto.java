@@ -23,7 +23,7 @@ public class PostResponseDto {
     private List<String> tags = new ArrayList<>();
     private int likeCount;
     private boolean likeStatus;
-   
+
 
     public PostResponseDto(Post post, boolean likeStatus) {
         this.id = post.getId();

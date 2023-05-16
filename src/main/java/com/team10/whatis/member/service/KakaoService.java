@@ -35,8 +35,6 @@ public class KakaoService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final JwtUtil jwtUtil;
 
-
-
     public ResponseDto<?> kakaoLogin(String code, HttpServletResponse response) throws JsonProcessingException {
         // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getToken(code);
@@ -49,14 +47,14 @@ public class KakaoService {
         Member kakaoUser = registerKakaoUserIfNeeded(kakaoUserInfo);
 
         // 4. JWT 토큰 반환
-        String createToken =  jwtUtil.createToken(kakaoUser.getEmail(),accessToken);
+        String createToken = jwtUtil.createToken(kakaoUser.getEmail(), accessToken);
         //Token 생성
         TokenDto tokenDto = jwtUtil.createAllToken(kakaoUserInfo.getEmail());
         //RefreshToken 있는지 확인
         Optional<RefreshToken> refreshToken = refreshTokenRepository.findByMember(kakaoUser);
         // 있으면 새 토큰 발급 후 업데이트
         // 없으면 새로 만들고 DB에 저장
-        if(refreshToken.isPresent()) {
+        if (refreshToken.isPresent()) {
             refreshTokenRepository.save(refreshToken.get().updateToken(tokenDto.getRefreshToken()));
         } else {
             refreshTokenRepository.saveAndFlush(RefreshToken.saveToken(tokenDto.getRefreshToken(), kakaoUser));

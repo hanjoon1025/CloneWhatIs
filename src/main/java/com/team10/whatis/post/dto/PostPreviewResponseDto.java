@@ -5,6 +5,7 @@ import com.team10.whatis.post.entity.Post;
 import lombok.Getter;
 
 import java.time.LocalDate;
+
 @Getter
 public class PostPreviewResponseDto {
     private Long id;

@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MyPageController {
     private final MyPageService myPageService;
+
     @GetMapping("/mypage") // 마이페이지 컨트롤러
-    public ResponseDto<MyPageResponseDto> findMyPage(@AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseDto<MyPageResponseDto> findMyPage(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return myPageService.findMyPage(userDetails.getMember().getId());
     }
 }

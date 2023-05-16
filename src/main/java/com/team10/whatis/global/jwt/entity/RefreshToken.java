@@ -27,11 +27,11 @@ public class RefreshToken {
         this.member = member;
     }
 
-    public static RefreshToken saveToken(String refreshToken, Member member){
+    public static RefreshToken saveToken(String refreshToken, Member member) {
         return new RefreshToken(refreshToken, member);
     }
 
-    public RefreshToken updateToken(String token){
+    public RefreshToken updateToken(String token) {
         this.refreshToken = token;
         return this;
     }

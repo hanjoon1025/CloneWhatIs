@@ -101,7 +101,7 @@ public class Post extends TimeStamped {
         this.totalAmount += price;
     }
 
-    public void updateLike (Boolean likeOrDislike){
+    public void updateLike(Boolean likeOrDislike) {
         this.likeCount = Boolean.TRUE.equals(likeOrDislike) ? this.likeCount + 1 : this.likeCount - 1;
     }
 }

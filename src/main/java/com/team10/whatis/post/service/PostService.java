@@ -47,6 +47,7 @@ public class PostService {
     private String bucket;
     private final AmazonS3 amazonS3;
     private final LikesRepository likesRepository;
+
     /**
      * 프로젝트 생성
      */
@@ -177,6 +178,7 @@ public class PostService {
         List<PostResponseDto> postList = getAllPostsByUserDetails(member, allPosts);
         return ResponseDto.setSuccess(postList);
     }
+
     /**
      * 프로젝트 상세 조회
      */
@@ -198,20 +200,20 @@ public class PostService {
         return ResponseDto.setSuccess(null);
     }
 
-    private List<PostResponseDto> getAllPostsByUserDetails(Member member, Page<Post> allPosts){
+    private List<PostResponseDto> getAllPostsByUserDetails(Member member, Page<Post> allPosts) {
         List<PostResponseDto> postList = new ArrayList<>();
-        for(Post post : allPosts){
+        for (Post post : allPosts) {
             PostResponseDto postResponseDto = getPostByUserDetails(member, post);
             postList.add(postResponseDto);
         }
         return postList;
     }
 
-    private PostResponseDto getPostByUserDetails(Member member, Post post){
+    private PostResponseDto getPostByUserDetails(Member member, Post post) {
         PostResponseDto postResponseDto = new PostResponseDto(post, false);
-        if(member!=null){
-            for(Likes likes : likesRepository.findAllByPost(post)){
-                if(member.getEmail().equals(likes.getMember().getEmail())){
+        if (member != null) {
+            for (Likes likes : likesRepository.findAllByPost(post)) {
+                if (member.getEmail().equals(likes.getMember().getEmail())) {
                     postResponseDto.setLikeStatus(true);
                     break;
                 }
