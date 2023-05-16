@@ -1,40 +1,43 @@
 package com.team10.whatis.global.config;
 
 
+import com.team10.whatis.global.exception.CustomAuthenticationEntryPoint;
+import com.team10.whatis.global.jwt.JwtAuthFilter;
+import com.team10.whatis.global.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class WebSecurityConfig {
-
+    private final JwtUtil jwtUtil;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        // h2-console 사용 및 resources 접근 허용 설정
-        return web -> web.ignoring()
-                //h2 콘솔
-                .requestMatchers(PathRequest.toH2Console())
-                //static 파일들
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
-                //Swagger (필요할까요?)
-                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**");
-    }
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        // h2-console 사용 및 resources 접근 허용 설정
+//        return web -> web.ignoring()
+//                //h2 콘솔
+//                .requestMatchers(PathRequest.toH2Console())
+//                //static 파일들
+//                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
+//                //Swagger (필요할까요?)
+//                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**");
+//    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -47,31 +50,34 @@ public class WebSecurityConfig {
                 //회원가입, 로그인페이지, 메인 페이지
                 .requestMatchers("/members/login").permitAll()
                 .requestMatchers("/members/signup").permitAll()
-                .requestMatchers("/members/auth").permitAll()
-                .requestMatchers(HttpMethod.GET,"/post/**").permitAll()
+                .requestMatchers("/emails/**").permitAll()
+                .requestMatchers(HttpMethod.GET,"/posts/**").permitAll()
 
-                .anyRequest().authenticated();
+                .anyRequest().authenticated()
                 // JWT 인증/인가를 사용하기 위한 설정
-                //.and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
-        // 이 설정을 해주지 않으면 밑의 corsConfigurationSource가 적용되지 않는다
-        //http.cors();
+        // 이 설정을 해주지 않으면 밑의 cors가 적용되지 않는다
+        http.cors();
+
+        //로그아웃 기능
+        http.logout()
+                .logoutUrl("/members/logout")
+                .logoutSuccessUrl("/posts")
+                .deleteCookies(JwtUtil.ACCESS_TOKEN, JwtUtil.REFRESH_TOKEN);
 
         // 401 Error 처리, Authorization 즉, 인증과정에서 실패할 시 처리
-        //http.exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
+        http.exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
 
         return http.build();
     }
 
-    // 이 설정을 해주면, 우리가 설정한대로 CorsFilter가 Security의 filter에 추가되어
-    // 예비 요청에 대한 처리를 해주게 됩니다.
-    // CorsFilter의 동작 과정이 궁금하시면, CorsFilter의 소스코드를 들어가 보세요!
+//      이렇게 Spring Security만 사용해서 CORS를 적용할 수 있습니다
 //    @Bean
 //    public CorsConfigurationSource corsConfigurationSource(){
 //
 //        CorsConfiguration config = new CorsConfiguration();
 //
-//        // 사전에 약속된 출처를 명시
 //        config.addAllowedOriginPattern("*");
 //
 //        // 특정 헤더를 클라이언트 측에서 사용할 수 있게 지정
