@@ -10,8 +10,10 @@ import com.team10.whatis.member.service.KakaoService;
 import com.team10.whatis.member.service.MemberService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,11 +21,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/members")
 public class MemberController {
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseDto<?> signupError(MethodArgumentNotValidException e){
+        return ResponseDto.setBadRequest(e.getFieldError().getDefaultMessage());
+    }
+
     private final MemberService memberService;
     private final KakaoService kakaoService;
 
     @PostMapping("/signup")
-    public ResponseDto<?> signup(@RequestBody MemberRequestDto requestDto) {
+    public ResponseDto<?> signup(@Valid @RequestBody MemberRequestDto requestDto) {
         return memberService.signup(requestDto);
 
     }
