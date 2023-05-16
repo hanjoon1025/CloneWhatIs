@@ -172,7 +172,7 @@ public class PostService {
     public ResponseDto<List<PostResponseDto>> findAllPosts(Pageable pageable, Category category, Member member) {
         Page<Post> allPosts = null;
 
-        if (category == null) {
+        if (category == Category.All) {
             allPosts = postRepository.findAll(pageable);
         } else {
             allPosts = postRepository.findAllByCategory(pageable, category);
