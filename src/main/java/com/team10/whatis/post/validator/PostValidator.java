@@ -57,45 +57,45 @@ public class PostValidator {
         });
     }
 
-    // 추가 검증 메서드들
-    public void validateProjectTitleLength(String title) {
-        if (title.length() > 40) {
-            throw new CustomException("프로젝트 제목은 40자까지 작성할 수 있습니다.");
-        }
-    }
-
-    public void validateFundingAmount(int amount) {
-        if (amount < 1000) {
-            throw new CustomException("펀딩 금액은 1천원 이상이어야 합니다.");
-        }
-    }
-
-    public void validateTargetAmount(int targetAmount) {
-        if (targetAmount < 500000 || targetAmount > 100000000) {
-            throw new CustomException("목표 금액은 50만원 이상 1억원 이하여야 합니다.");
-        }
-    }
-
-    public void validateDeadline(LocalDate deadline) {
-        if (deadline.isBefore(LocalDate.now())) {
-            throw new CustomException("마감일은 오늘보다 과거일 수 없습니다.");
-        }
-    }
-
-    public void validatePostStory(PostStoryRequestDto postStoryRequestDto) {
-        if (postStoryRequestDto.getSummary().length() > 100) {
-            throw new CustomException("프로젝트 요약은 100자까지 작성할 수 있습니다.");
-        }
-        if (postStoryRequestDto.getStoryBoard().length() > 1000) {
-            throw new CustomException("프로젝트 스토리는 1000자까지 작성할 수 있습니다.");
-        }
-    }
-
-    public void validateCategory(Category category) {
-        if (category == null) {
-            throw new CustomException("일치하는 카테고리가 없습니다.");
-        }
-    }
+//    // 추가 검증 메서드들
+//    public void validateProjectTitleLength(String title) {
+//        if (title.length() > 40) {
+//            throw new CustomException("프로젝트 제목은 40자까지 작성할 수 있습니다.");
+//        }
+//    }
+//
+//    public void validateFundingAmount(int amount) {
+//        if (amount < 1000) {
+//            throw new CustomException("펀딩 금액은 1천원 이상이어야 합니다.");
+//        }
+//    }
+//
+//    public void validateTargetAmount(int targetAmount) {
+//        if (targetAmount < 500000 || targetAmount > 100000000) {
+//            throw new CustomException("목표 금액은 50만원 이상 1억원 이하여야 합니다.");
+//        }
+//    }
+//
+//    public void validateDeadline(LocalDate deadline) {
+//        if (deadline.isBefore(LocalDate.now())) {
+//            throw new CustomException("마감일은 오늘보다 과거일 수 없습니다.");
+//        }
+//    }
+//
+//    public void validatePostStory(PostStoryRequestDto postStoryRequestDto) {
+//        if (postStoryRequestDto.getSummary().length() > 100) {
+//            throw new CustomException("프로젝트 요약은 100자까지 작성할 수 있습니다.");
+//        }
+//        if (postStoryRequestDto.getStoryBoard().length() > 1000) {
+//            throw new CustomException("프로젝트 스토리는 1000자까지 작성할 수 있습니다.");
+//        }
+//    }
+//
+//    public void validateCategory(Category category) {
+//        if (category == null) {
+//            throw new CustomException("일치하는 카테고리가 없습니다.");
+//        }
+//    }
 
 
 }
