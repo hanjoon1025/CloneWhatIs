@@ -35,24 +35,22 @@ public class MemberService {
     private final MemberValidator memberValidator;
 
     public ResponseDto<?> signup(MemberRequestDto requestDto) {
-        try {
-            //비밀번호 검증 확인
-            memberValidator.validatePasswordCheck(requestDto);
 
-            // 비밀번호 암호화
-            String password = passwordEncoder.encode(requestDto.getPassword());
+        //비밀번호 검증 확인
+        memberValidator.validatePasswordCheck(requestDto);
 
-            // 회원 중복 확인
-            memberValidator.validateIsExistMember(requestDto.getEmail());
+        // 비밀번호 암호화
+        String password = passwordEncoder.encode(requestDto.getPassword());
 
-            // 사용자 DB에 저장
-            memberRepository.saveAndFlush(Member.saveMember(requestDto, password));
+        // 회원 중복 확인
+        memberValidator.validateIsExistMember(requestDto.getEmail());
 
-            return ResponseDto.setSuccess(null);
+        // 사용자 DB에 저장
+        memberRepository.saveAndFlush(Member.saveMember(requestDto, password));
 
-        } catch (CustomException e) {
-            throw e;
-        }
+        return ResponseDto.setSuccess(null);
+
+
     }
 
     public ResponseDto<?> login(MemberRequestDto.login requestDto, HttpServletResponse response) {

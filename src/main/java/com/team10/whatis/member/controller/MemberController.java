@@ -12,6 +12,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -21,10 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/members")
 public class MemberController {
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseDto<?> signupError(MethodArgumentNotValidException e){
-        return ResponseDto.setBadRequest(e.getFieldError().getDefaultMessage());
-    }
+
 
     private final MemberService memberService;
     private final KakaoService kakaoService;
