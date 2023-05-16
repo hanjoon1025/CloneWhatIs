@@ -10,9 +10,6 @@ import com.team10.whatis.post.repository.FundPostRepository;
 import com.team10.whatis.post.repository.PostRepository;
 import com.team10.whatis.post.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -30,7 +27,7 @@ public class PostValidator {
     //게시글 존재 여부 확인
     public Post validateIsExistPost(Long id) {
         return postRepository.findById(id).orElseThrow(
-                () -> new NoSuchElementException("존재하지 않는 프로젝트입니다.")
+                () -> new CustomException("존재하지 않는 프로젝트입니다.")
         );
     }
 

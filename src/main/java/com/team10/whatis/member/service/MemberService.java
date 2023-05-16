@@ -6,21 +6,16 @@ import com.team10.whatis.global.jwt.JwtUtil;
 import com.team10.whatis.global.jwt.dto.TokenDto;
 import com.team10.whatis.global.jwt.entity.RefreshToken;
 import com.team10.whatis.global.jwt.repository.RefreshTokenRepository;
-import com.team10.whatis.global.security.UserDetailsImpl;
 import com.team10.whatis.member.dto.MemberRequestDto;
 import com.team10.whatis.member.entity.Member;
 import com.team10.whatis.member.repository.MemberRepository;
 import com.team10.whatis.member.validator.MemberValidator;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.swing.text.html.Option;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service

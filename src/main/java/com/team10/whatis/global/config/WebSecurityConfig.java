@@ -1,6 +1,7 @@
 package com.team10.whatis.global.config;
 
 
+import com.team10.whatis.global.exception.CustomAuthenticationEntryPoint;
 import com.team10.whatis.global.jwt.JwtAuthFilter;
 import com.team10.whatis.global.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class WebSecurityConfig {
     private final JwtUtil jwtUtil;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -65,7 +67,7 @@ public class WebSecurityConfig {
                 .deleteCookies(JwtUtil.ACCESS_TOKEN, JwtUtil.REFRESH_TOKEN);
 
         // 401 Error 처리, Authorization 즉, 인증과정에서 실패할 시 처리
-        //http.exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
+        http.exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
 
         return http.build();
     }
