@@ -14,8 +14,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -57,12 +59,19 @@ public class PostController {
     @GetMapping
     public ResponseDto<List<PostResponseDto>> postList(@PageableDefault(page = 0, size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
                                                        @RequestParam(value = "search", required = false) String keyword,
-                                                       @RequestParam(value = "category", required = false) Category category,
-                                                       Authentication authentication) {
-        if (keyword != null) {
-            return postService.searchPost(pageable, keyword, authentication);
+                                                       @RequestParam(value = "category", required = false) Category category) {
+        if(isAuthenticated()){
+            UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (keyword != null) {
+                return postService.searchPost(pageable, keyword, userDetails.getMember());
+            }
+            return postService.findAllPosts(pageable, category,userDetails.getMember());
         }
-        return postService.findAllPosts(pageable, category,authentication);
+        if (keyword != null) {
+            return postService.searchPost(pageable, keyword, null);
+        }
+        return postService.findAllPosts(pageable, category, null);
+
     }
 
     @PostMapping("/{id}")
@@ -71,7 +80,22 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public ResponseDto<PostResponseDto> findPost(@PathVariable Long id, Authentication authentication) {
-        return postService.findPost(id, authentication);
+    public ResponseDto<PostResponseDto> findPost(@PathVariable Long id) {
+        if(isAuthenticated()){
+            UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            return postService.findPost(id, userDetails.getMember());
+        }
+        return postService.findPost(id,null);
     }
+
+    //로그인 여부 확인
+    private boolean isAuthenticated() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || AnonymousAuthenticationToken.class.
+                isAssignableFrom(authentication.getClass())) {
+            return false;
+        }
+        return authentication.isAuthenticated();
+    }
+
 }

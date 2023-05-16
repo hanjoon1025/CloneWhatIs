@@ -158,18 +158,18 @@ public class PostService {
     /**
      * 제목과 태그에 keyword가 포함되는 프로젝트 검색
      */
-    public ResponseDto<List<PostResponseDto>> searchPost(Pageable pageable, String keyword, Authentication authentication) {
+    public ResponseDto<List<PostResponseDto>> searchPost(Pageable pageable, String keyword, Member member) {
         Page<Post> allPosts = postRepository.findByTitleContainingOrTagsTagNameContaining(pageable, keyword, keyword);
 
 
-        List<PostResponseDto> postList = getAllPostsByUserDetails(authentication, allPosts);
+        List<PostResponseDto> postList = getAllPostsByUserDetails(member, allPosts);
         return ResponseDto.setSuccess(postList);
     }
 
     /**
      * 프로젝트 전체 조회
      */
-    public ResponseDto<List<PostResponseDto>> findAllPosts(Pageable pageable, Category category, Authentication authentication) {
+    public ResponseDto<List<PostResponseDto>> findAllPosts(Pageable pageable, Category category, Member member) {
         Page<Post> allPosts = null;
 
         if (category == null) {
@@ -177,16 +177,15 @@ public class PostService {
         } else {
             allPosts = postRepository.findAllByCategory(pageable, category);
         }
-        List<PostResponseDto> postList = getAllPostsByUserDetails(authentication, allPosts);
+        List<PostResponseDto> postList = getAllPostsByUserDetails(member, allPosts);
         return ResponseDto.setSuccess(postList);
     }
-
     /**
      * 프로젝트 상세 조회
      */
-    public ResponseDto<PostResponseDto> findPost(Long id, Authentication authentication) {
+    public ResponseDto<PostResponseDto> findPost(Long id, Member member) {
         Post post = postValidator.validateIsExistPost(id);
-        PostResponseDto postResponseDto = getPostByUserDetails(authentication, post);
+        PostResponseDto postResponseDto = getPostByUserDetails(member, post);
         return ResponseDto.setSuccess(postResponseDto);
     }
 
@@ -202,29 +201,26 @@ public class PostService {
         return ResponseDto.setSuccess(null);
     }
 
-    private List<PostResponseDto> getAllPostsByUserDetails(Authentication authentication, Page<Post> allPosts){
+    private List<PostResponseDto> getAllPostsByUserDetails(Member member, Page<Post> allPosts){
         List<PostResponseDto> postList = new ArrayList<>();
         for(Post post : allPosts){
-            PostResponseDto postResponseDto = getPostByUserDetails(authentication, post);
+            PostResponseDto postResponseDto = getPostByUserDetails(member, post);
             postList.add(postResponseDto);
         }
         return postList;
     }
 
-    private PostResponseDto getPostByUserDetails(Authentication authentication, Post post){
+    private PostResponseDto getPostByUserDetails(Member member, Post post){
         PostResponseDto postResponseDto = new PostResponseDto(post, false);
-
-
-        if(!(authentication instanceof AnonymousAuthenticationToken)){
-            System.out.println("Logged in");
-            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        if(member!=null){
             for(Likes likes : likesRepository.findAllByPost(post)){
-                if(userDetails.getMember().getEmail().equals(likes.getMember().getEmail())){
+                if(member.getEmail().equals(likes.getMember().getEmail())){
                     postResponseDto.setLikeStatus(true);
                     break;
                 }
             }
         }
+
         return postResponseDto;
     }
 }
