@@ -8,6 +8,7 @@ import com.team10.whatis.member.dto.MemberRequestDto;
 import com.team10.whatis.member.dto.MyPageResponseDto;
 import com.team10.whatis.member.entity.Member;
 import com.team10.whatis.member.repository.MemberRepository;
+import com.team10.whatis.post.dto.PostPreviewResponseDto;
 import com.team10.whatis.post.dto.PostRequestDto;
 import com.team10.whatis.post.dto.PostResponseDto;
 import com.team10.whatis.post.entity.Post;
@@ -33,28 +34,28 @@ public class MyPageService {
         MyPageResponseDto에 담아서 반환해줌.
      */
     public ResponseDto<MyPageResponseDto> findMyPage(Long memberId){
-        List<PostResponseDto> myProjectList = getAllPostsByUserDetails(memberId, postRepository.findAllByMemberId(memberId));
-        List<PostResponseDto> myFundingList = getAllPostsByUserDetails(memberId,postRepository.findAllByMemberIdAndIsFunding(memberId));
+        List<PostPreviewResponseDto> myProjectList = getAllPostsByUserDetails(memberId, postRepository.findAllByMemberId(memberId));
+        List<PostPreviewResponseDto> myFundingList = getAllPostsByUserDetails(memberId,postRepository.findAllByMemberIdAndIsFunding(memberId));
         return ResponseDto.setSuccess(new MyPageResponseDto(myProjectList,myFundingList));
     }
 
-    private List<PostResponseDto> getAllPostsByUserDetails(Long  memberId, List<Post> allPosts){
-        List<PostResponseDto> postList = new ArrayList<>();
+    private List<PostPreviewResponseDto> getAllPostsByUserDetails(Long  memberId, List<Post> allPosts){
+        List<PostPreviewResponseDto> postList = new ArrayList<>();
         for(Post post : allPosts){
-            PostResponseDto postResponseDto = getPostByUserDetails(memberId, post);
-            postList.add(postResponseDto);
+            PostPreviewResponseDto postPreviewResponseDto = getPostByUserDetails(memberId, post);
+            postList.add(postPreviewResponseDto);
         }
         return postList;
     }
 
-    private PostResponseDto getPostByUserDetails(Long memberId, Post post){
-        PostResponseDto postResponseDto = new PostResponseDto(post, false);
+    private PostPreviewResponseDto getPostByUserDetails(Long memberId, Post post){
+        PostPreviewResponseDto postPreviewResponseDto = new PostPreviewResponseDto(post, false);
         for(Likes likes : likesRepository.findAllByPost(post)){
             if(likes.getMember().getId().equals(memberId)){
-                postResponseDto.setLikeStatus(true);
+                postPreviewResponseDto.setLikeStatus(true);
                 break;
             }
         }
-        return postResponseDto;
+        return postPreviewResponseDto;
     }
 }
