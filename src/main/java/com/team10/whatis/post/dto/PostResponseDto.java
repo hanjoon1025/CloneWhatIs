@@ -14,6 +14,7 @@ public class PostResponseDto {
     private Category category;
     private String title;
     private String thumbnail;
+    private String projectImage;
     private int targetAmount;
     private int totalAmount;
     private int price;
@@ -32,6 +33,7 @@ public class PostResponseDto {
         this.category = post.getCategory();
         this.title = post.getTitle();
         this.thumbnail = post.getThumbnail();
+        this.projectImage = post.getProjectImage();
         this.targetAmount = post.getTargetAmount();
         this.totalAmount = post.getTotalAmount();
         this.deadLine = post.getDeadLine();
