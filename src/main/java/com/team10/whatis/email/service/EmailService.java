@@ -40,7 +40,6 @@ public class EmailService {
         log.info("보내는 대상 : "+ to);
         log.info("인증 번호 : " + code);
         MimeMessage message = javaMailSender.createMimeMessage();
-
         message.addRecipients(MimeMessage.RecipientType.TO, to); // to 보내는 대상
         message.setSubject("WhatIs 회원가입 인증 코드: "); //메일 제목
 
@@ -82,9 +81,9 @@ public class EmailService {
         try {
             message = createMessage(email.getEmail(),code); // 전송 메시지 삭성 메서드 호출
         } catch (MessagingException e) {
-            ResponseDto.setBadRequest("메일 전송 실패",null);
+            new CustomException("메일 전송 실패");
         } catch (UnsupportedEncodingException e) {
-            ResponseDto.setBadRequest("메일 전송 실패",null);
+            new CustomException("메일 전송 실패");
         }
         try{
             javaMailSender.send(message); // 메일 발송
