@@ -66,7 +66,7 @@ public class WebSecurityConfig {
                 .logoutUrl("/members/logout")
                 .logoutSuccessUrl("/posts")
                 .deleteCookies(JwtUtil.ACCESS_TOKEN, JwtUtil.REFRESH_TOKEN);
-
+//
         // 401 Error 처리, Authorization 즉, 인증과정에서 실패할 시 처리
         http.exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
 
