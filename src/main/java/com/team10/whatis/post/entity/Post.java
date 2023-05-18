@@ -73,10 +73,14 @@ public class Post extends TimeStamped {
     @ColumnDefault("0")
     private int likeCount;
 
+    @Column(nullable = false)
+    private boolean isFinish;
+
     public Post(PostRequestDto postRequestDto, Member member) {
         this.category = postRequestDto.getCategory();
         this.member = member;
         this.totalAmount = 0;
+        this.isFinish = false;
     }
 
     public void updatePostInfo(PostInfoRequestDto postInfoRequestDto) {
@@ -89,6 +93,7 @@ public class Post extends TimeStamped {
     public void updatePostStory(PostStoryRequestDto postStoryRequestDto) {
         this.summary = postStoryRequestDto.getSummary();
         this.storyBoard = postStoryRequestDto.getStoryBoard();
+        this.isFinish = true;
     }
 
     public void saveTags(Tag tag) {
