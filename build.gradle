@@ -25,6 +25,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.projectlombok:lombok:1.18.22'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'com.mysql:mysql-connector-j'
@@ -52,12 +53,16 @@ dependencies {
     //mysql
     implementation 'mysql:mysql-connector-java:8.0.26'
     runtimeOnly 'mysql:mysql-connector-java'
+    // spring-boot-test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
 }
 
 tasks.named('test') {
     useJUnitPlatform()
 }
 
-test {
-    exclude '**/*'
-}
+
+//test {
+//    exclude '**/*'
+//}

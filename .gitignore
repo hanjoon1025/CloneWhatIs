@@ -39,3 +39,4 @@ out/
 ### properties ###
 src/main/resources/application-secret.yml
 src/main/resources/application-aws.yml
+src/test/resources/application-aws.yml
