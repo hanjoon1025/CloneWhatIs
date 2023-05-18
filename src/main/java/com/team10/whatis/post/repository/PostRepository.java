@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
-    Page<Post> findByTitleContainingOrTagsTagNameContaining(Pageable pageable, String keyword, String tagKeyword);
+    Page<Post> findByIsFinishTrueAndTitleContainingOrTagsTagNameContaining(Pageable pageable, String keyword, String tagKeyword);
 
     @Query("select p from Post p where p.member.id = :memberId")
         // MemberId와 일치하는 Post들만 가져오기
@@ -25,6 +25,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
      */
     @Query("select p from Post p where p.id in (select f.post.id from FundPost f where f.member.id=:memberId)")
     List<Post> findAllByMemberIdAndIsFunding(@Param("memberId") Long memberId);
+    Page<Post> findAllByIsFinishTrue(Pageable pageable);
 
-    Page<Post> findAllByCategory(Pageable pageable, Category category);
+    Page<Post> findAllByCategoryAndIsFinishTrue(Pageable pageable, Category category);
 }

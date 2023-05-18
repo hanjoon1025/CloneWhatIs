@@ -157,8 +157,7 @@ public class PostService {
      * 제목과 태그에 keyword가 포함되는 프로젝트 검색
      */
     public ResponseDto<List<PostResponseDto>> searchPost(Pageable pageable, String keyword, Member member) {
-        Page<Post> allPosts = postRepository.findByTitleContainingOrTagsTagNameContaining(pageable, keyword, keyword);
-
+        Page<Post> allPosts = postRepository.findByIsFinishTrueAndTitleContainingOrTagsTagNameContaining(pageable, keyword, keyword);
 
         List<PostResponseDto> postList = getAllPostsByUserDetails(member, allPosts);
         return ResponseDto.setSuccess(postList);
@@ -171,9 +170,9 @@ public class PostService {
         Page<Post> allPosts = null;
 
         if (category == Category.All) {
-            allPosts = postRepository.findAll(pageable);
+            allPosts = postRepository.findAllByIsFinishTrue(pageable);
         } else {
-            allPosts = postRepository.findAllByCategory(pageable, category);
+            allPosts = postRepository.findAllByCategoryAndIsFinishTrue(pageable, category);
         }
         List<PostResponseDto> postList = getAllPostsByUserDetails(member, allPosts);
         return ResponseDto.setSuccess(postList);
