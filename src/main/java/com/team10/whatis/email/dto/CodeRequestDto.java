@@ -1,10 +1,11 @@
 package com.team10.whatis.email.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Getter
-@AllArgsConstructor
+@Setter
 public class CodeRequestDto {
     private String email;
     private String code;

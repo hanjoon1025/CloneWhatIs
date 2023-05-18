@@ -3,8 +3,9 @@ package com.team10.whatis.post.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Range;
 
 import java.time.LocalDate;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@AllArgsConstructor
+@Setter
 public class PostInfoRequestDto {
 
     @Size(max = 40, message = "{title}")

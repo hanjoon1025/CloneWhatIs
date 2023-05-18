@@ -1,13 +1,11 @@
 package com.team10.whatis.member.dto;
 
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@Setter
 public class MemberRequestDto {
 
     private String email;

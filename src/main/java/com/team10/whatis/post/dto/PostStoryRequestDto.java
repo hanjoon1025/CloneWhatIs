@@ -1,11 +1,12 @@
 package com.team10.whatis.post.dto;
 
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Getter
-@AllArgsConstructor
+@Setter
 public class PostStoryRequestDto {
     @Size(max = 100, message = "{summary}")
     private String summary;
