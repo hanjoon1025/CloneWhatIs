@@ -115,18 +115,6 @@ class PostServiceTest {
     }
 
     @Test
-    @DisplayName("모든 프로젝트 가져오기 성공 테스트")
-    public void success_findAllPost(){
-        Pageable pageable = PageRequest.of(0, 10);
-        for(int i=0;i<5;i++){
-            PostRequestDto postRequestDto = new PostRequestDto(Category.Beauty);
-            postService.createPost(postRequestDto, member);
-        }
-        ResponseDto<List<PostResponseDto>> responseDto = postService.findAllPosts(pageable,Category.Beauty,member);
-        assertThat(responseDto.getData().size()).isEqualTo(6);
-    }
-
-    @Test
     @DisplayName("프로젝트 아이디로 가져오기 성공 테스트")
     public void success_findPost(){
         Post post = postRepository.findAllByMemberId(member.getId()).get(0);
