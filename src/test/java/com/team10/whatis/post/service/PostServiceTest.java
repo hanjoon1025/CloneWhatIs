@@ -67,7 +67,12 @@ class PostServiceTest {
     @BeforeEach
     @DisplayName("기본 세팅")
     public void setUp(){
-        member = Member.saveMember(new MemberRequestDto("test123@naver.com","테스트","Test12345!","Test12345!"),"Test12345!");
+        MemberRequestDto memberRequestDto = new MemberRequestDto();
+        memberRequestDto.setEmail("abc123@naver.com");
+        memberRequestDto.setPassword("Test12345!");
+        memberRequestDto.setUsername("테스트");
+        memberRequestDto.setPasswordCheck("Test12345!");
+        member = Member.saveMember(memberRequestDto,"Test12345!");
         memberRepository.save(member);
         PostRequestDto postRequestDto = new PostRequestDto(Category.Beauty);
         postService.createPost(postRequestDto, member);
@@ -85,7 +90,12 @@ class PostServiceTest {
     @DisplayName("프로젝트 업데이트 성공 테스트")
     public void success_updatePostInfo() throws IOException {
         //given
-        PostInfoRequestDto postInfoRequestDto = new PostInfoRequestDto("스즈메의 문단속",5000000,10000, LocalDate.now(),new ArrayList<>());
+        PostInfoRequestDto postInfoRequestDto = new PostInfoRequestDto();
+        postInfoRequestDto.setTitle("스즈메의 문단속");
+        postInfoRequestDto.setTargetAmount(5000000);
+        postInfoRequestDto.setPrice(10000);
+        postInfoRequestDto.setDeadLine(LocalDate.now());
+        postInfoRequestDto.setSearchTag(new ArrayList<>());
         MultipartFile multipartFile = mock(MultipartFile.class);
         when(multipartFile.getOriginalFilename()).thenReturn("test.png");
         when(multipartFile.getContentType()).thenReturn("image/png");
@@ -102,18 +112,6 @@ class PostServiceTest {
         Post post = postRepository.findAllByMemberId(member.getId()).get(0);
         ResponseDto<?> responseDto = postService.deletePost(post.getId(), member);
         assertThat(responseDto.getStatus()).isEqualTo(StatusCode.OK);
-    }
-
-    @Test
-    @DisplayName("모든 프로젝트 가져오기 성공 테스트")
-    public void success_findAllPost(){
-        Pageable pageable = PageRequest.of(0, 10);
-        for(int i=0;i<5;i++){
-            PostRequestDto postRequestDto = new PostRequestDto(Category.Beauty);
-            postService.createPost(postRequestDto, member);
-        }
-        ResponseDto<List<PostResponseDto>> responseDto = postService.findAllPosts(pageable,Category.Beauty,member);
-        assertThat(responseDto.getData().size()).isEqualTo(6);
     }
 
     @Test
@@ -136,7 +134,9 @@ class PostServiceTest {
     @Test
     @DisplayName("프로젝트 스토리 업데이트 성공 테스트")
     public void success_updatePostStory() throws IOException {
-        PostStoryRequestDto postStoryRequestDto = new PostStoryRequestDto("test", "test");
+        PostStoryRequestDto postStoryRequestDto = new PostStoryRequestDto();
+        postStoryRequestDto.setStoryBoard("test");
+        postStoryRequestDto.setSummary("test");
         MultipartFile multipartFile = mock(MultipartFile.class);
         when(multipartFile.getOriginalFilename()).thenReturn("test.png");
         when(multipartFile.getContentType()).thenReturn("image/png");

@@ -34,7 +34,8 @@ class EmailServiceTest {
     @DisplayName("인증메일 발송 성공 테스트")
     public void success_CreateMessage(){
         //given
-        EmailRequestDto emailRequestDto = new EmailRequestDto("abc123@naver.com");
+        EmailRequestDto emailRequestDto = new EmailRequestDto();
+        emailRequestDto.setEmail("abc123@naver.com");
         MimeMessage mockMessage = mock(MimeMessage.class);
         //when
         when(javaMailSender.createMimeMessage()).thenReturn(mockMessage);
@@ -47,7 +48,8 @@ class EmailServiceTest {
     @DisplayName("인증메일 발송 실패 테스트")
     public void fail_CreateMessage(){
         //given
-        EmailRequestDto emailRequestDto = new EmailRequestDto("abc123@naver.com");
+        EmailRequestDto emailRequestDto = new EmailRequestDto();
+        emailRequestDto.setEmail("abc123@naver.com");
         CustomException mockException = mock(CustomException.class);
         //when
         when(javaMailSender.createMimeMessage()).thenThrow(mockException);
@@ -59,7 +61,9 @@ class EmailServiceTest {
     @DisplayName("인증코드 검증 성공 테스트")
     public void success_CodeCheck(){
         //given
-        CodeRequestDto codeRequestDto = new CodeRequestDto("abc123@naver.com","123456");
+        CodeRequestDto codeRequestDto = new CodeRequestDto();
+        codeRequestDto.setEmail("abc123@naver.com");
+        codeRequestDto.setCode("123456");
         Email mockEmail = mock(Email.class);
         //when
         when(emailValidator.validateExistEmail(codeRequestDto.getEmail())).thenReturn(mockEmail);
@@ -72,7 +76,9 @@ class EmailServiceTest {
     @DisplayName("인증코드 검증 실패 테스트")
     public void fail_CodeCheck(){
         //given
-        CodeRequestDto codeRequestDto = new CodeRequestDto("abc123@naver.com","123456");
+        CodeRequestDto codeRequestDto = new CodeRequestDto();
+        codeRequestDto.setEmail("abc123@naver.com");
+        codeRequestDto.setCode("123456");
         CustomException mockException = mock(CustomException.class);
         //when
         when(emailValidator.validateExistEmail(codeRequestDto.getEmail())).thenThrow(mockException);
