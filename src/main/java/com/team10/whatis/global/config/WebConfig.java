@@ -48,7 +48,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedHeaders("*")
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowedOrigins("http://localhost:3000")
+                .allowedOrigins("http://localhost:3000", "http://3.38.42.129:3000")
                 .exposedHeaders(JwtUtil.ACCESS_TOKEN, JwtUtil.REFRESH_TOKEN);
     }
 }
