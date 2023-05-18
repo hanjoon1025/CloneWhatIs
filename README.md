@@ -4,7 +4,7 @@ S.A 노션 페이지 : https://www.notion.so/5ceda156c0df4ce9b7985b15522cb2e5
 
 
 # ERD
-![스크린샷 2023-05-04 오전 11 20 53](https://github.com/hanjoon1025/Clone_What_Is/assets/128885464/153762a3-7436-4155-bc91-5396dc9f6c54)
+![스크린샷 2023-05-18 오후 2 45 48](https://github.com/hanjoon1025/Clone_What_Is/assets/128885464/f9034808-a83c-40fc-aa60-750d63040064)
 
 # 구현 API
 - 회원가입 & 로그인
