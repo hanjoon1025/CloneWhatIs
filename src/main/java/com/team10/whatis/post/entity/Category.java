@@ -7,7 +7,7 @@ public enum Category {
     All("All"),
     FashionStuff("FashionStuff"),
     HomeLiving("HomeLiving"),
-    TechEletrics("TechEletrics"),
+    TechEletrics("TechElectrics"),
     Beauty("Beauty"),
     Food("Food"),
     LeisureSports("LeisureSports");
